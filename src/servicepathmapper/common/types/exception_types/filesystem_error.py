@@ -1,9 +1,9 @@
 from dataclasses import dataclass
 
-from servicepathmapper.common.types.runtime_message_base import RuntimeMessageBase
+from servicepathmapper.common.types.printable import Printable
 
 
 @dataclass
-class FileSystemError(RuntimeMessageBase, Exception):
+class FileSystemError(Printable, Exception):
     def __str__(self) -> str:
         return self._format('File system error')

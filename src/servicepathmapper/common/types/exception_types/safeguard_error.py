@@ -1,9 +1,9 @@
 from dataclasses import dataclass
 
-from servicepathmapper.common.types.runtime_message_base import RuntimeMessageBase
+from servicepathmapper.common.types.printable import Printable
 
 
 @dataclass
-class SafeguardError(RuntimeMessageBase, Exception):
+class SafeguardError(Printable, Exception):
     def __str__(self) -> str:
         return self._format('Safeguard error')

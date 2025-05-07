@@ -1,9 +1,9 @@
 from dataclasses import dataclass
 
-from servicepathmapper.common.types.runtime_message_base import RuntimeMessageBase
+from servicepathmapper.common.types.printable import Printable
 
 
 @dataclass
-class ConflictingArgsError(RuntimeMessageBase, Exception):
+class ConflictingArgsError(Printable, Exception):
     def __str__(self) -> str:
         return self._format('Conflicting args error')

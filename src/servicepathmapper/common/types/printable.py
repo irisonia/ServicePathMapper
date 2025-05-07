@@ -1,12 +1,17 @@
+from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
 from typing import Any, Optional
 
 
 @dataclass
-class RuntimeMessageBase:
+class Printable(ABC):
     title: str
     values: Optional[dict[str, Any]] = field(default_factory=dict)
     help_topics: Optional[list[str]] = field(default_factory=list)
+
+    @abstractmethod
+    def __str__(self) -> str:
+        raise NotImplementedError
 
     def _format(self, title: str) -> str:
         return f'{title}:\n{self.title}{self._format_values()}{self._format_help_topics()}'
