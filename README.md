@@ -13,7 +13,7 @@ Map and analyze service-based paths between servers in a distributed system, hon
 ## Features
 
 - Discover all service-based paths between two servers, honoring policy constraints.
-- Simulate "what-if" scenarios (e.g., server/service outages).
+- Simulate "what-if" scenarios, such as server/service outages.
 - Enforce security policies by requiring or forbidding specific servers/services in paths.
 - Analyze and optimize resource allocation and configuration.
 - Output detailed statistics about both the system and the resulting paths.
@@ -27,7 +27,8 @@ Map and analyze service-based paths between servers in a distributed system, hon
 
 - **What-if Scenarios:**  
   Apply flexible constraints to explore “what-if” scenarios.  
-  *Example: Outages Simulation* - List any servers/services as 'forbidden' (not allowed to participate in paths) and observe impacts such as:
+  Example:  
+  *Outages Simulation* - List any servers/services as 'forbidden' (not allowed to participate in paths) and observe impacts such as:
     - Changes in the number of valid paths.
     - Shifts in the participation of other servers and services.
     - Services now lacking providers or clients.
@@ -46,18 +47,18 @@ Map and analyze service-based paths between servers in a distributed system, hon
 1. **Clone the repository:**  
 git clone https://github.com/irisonia/ServicePathMapper
 
-2. **Navigate to the project directory (where "pyproject.toml" is located):**  
+2. **Navigate to the project directory** (where "pyproject.toml" is located):  
 cd servicepathmapper
 
 3. **Install the requirements and the program in editable mode:**  
-pip install -r requirements.txt
-pip install -e .
+pip3 install -r requirements.txt  
+pip3 install -e .
 
 ---
 
 ## Usage
 
-1. **Navigate to the project directory (where "pyproject.toml" is located):**  
+1. **Navigate to the project directory** (where "pyproject.toml" is located):  
 cd servicepathmapper
 
 2. **Run the program:**  
@@ -83,8 +84,8 @@ For help about the config.json, use `--help-config`.
 
 - Use `--help` or `-h` for detailed input and configuration options.
 - **Key outputs:**
-  - Paths between servers (with connecting services), grouped by server groups.
-  - Statistical analysis of the system and resulting paths.
+  - Paths between servers, with connecting services, grouped by server groups and by path lengths.
+  - Statistical analysis of the system and the resulting paths.
 - For details, see `--help-output`, `--help-paths`, and `--help-stats`.
 - Log messages are saved in `log.txt`.
 
@@ -117,10 +118,14 @@ If you have ideas or want to help shape the roadmap, please open a new issue or 
 
 ## Coming Soon
 
-- **Detection and reporting of unreachable servers and dead end servers.**  
-  See [issue #1](https://github.com/yourusername/yourrepo/issues/1) for details.
+- **Detect and Report Unreachable and Dead-End Servers for System Analysis and Runtime Optimization**  
+  https://github.com/irisonia/ServicePathMapper/issues/1
+- **Allow Splitting Stats Output into Separate Files in a Dedicated Folder**  
+  https://github.com/irisonia/ServicePathMapper/issues/2
+- **Set an Upper Limit for max-threads Argument**  
+  https://github.com/irisonia/ServicePathMapper/issues/3
 
-We welcome feedback and contributions-if this feature is important to you, let us know or join the discussion!
+We welcome feedback and value contributions.
 
 ---
 

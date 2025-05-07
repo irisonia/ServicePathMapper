@@ -3,7 +3,7 @@ import servicepathmapper.common.strings.program_args as program_args
 import servicepathmapper.common.strings.stats as output_stats
 
 CONFIG_HELP_STR = (
-    'Configuration for running Service Path Mapper:'
+    'Configuration for Service Path Mapper:'
     '\nThe program accepts a path to a JSON configuration file.'
     '\nExample: `--config [path/to/config.json]`'
     '\nConfiguration given via the configuration file has lower precedence than that given via the command line.'
