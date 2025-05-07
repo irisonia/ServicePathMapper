@@ -45,24 +45,24 @@ Map and analyze service-based paths between servers in a distributed system, hon
 ## Installation
 
 1. **Clone the repository:**  
-git clone https://github.com/irisonia/ServicePathMapper
+`git clone https://github.com/irisonia/ServicePathMapper`
 
 2. **Navigate to the project directory** (where "pyproject.toml" is located):  
-cd servicepathmapper
+`cd servicepathmapper`
 
 3. **Install the requirements and the program in editable mode:**  
-pip3 install -r requirements.txt  
-pip3 install -e .
+`pip3 install -r requirements.txt`  
+`pip3 install -e .`
 
 ---
 
 ## Usage
 
 1. **Navigate to the project directory** (where "pyproject.toml" is located):  
-cd servicepathmapper
+`cd servicepathmapper`
 
 2. **Run the program:**  
-python3 -m servicepathmapper.service_path_mapper --config path/to/your/config.json
+`python3 -m servicepathmapper.service_path_mapper --config path/to/your/config.json`
 
 For help about the config.json, use `--help-config`.
 
@@ -94,15 +94,11 @@ For help about the config.json, use `--help-config`.
 ## Testing
 
 - Run all tests using:
-pytest
+`pytest`
 
 ---
 
 ## Developer Notes
-
-- **Version Management:**  
-To update the project version, use the `version_update_tool.py` script in the project root.  
-Please follow [Semantic Versioning](https://semver.org/) (SemVer) when updating.
 
 - **CodeBehaviorAlert:**  
 If the program ever raises a `CodeBehaviorAlert`, this indicates an internal consistency or logic issue.  
@@ -111,8 +107,9 @@ Before opening a new issue, check the [open issues](https://github.com/irisonia/
 Feel free to comment, add information, or suggest fixes on existing issues-your feedback is valuable!
 
 - **Contributing & Roadmap:**  
-Contributions are welcome! See the [open issues](https://github.com/irisonia/ServicePathMapper/issues) for bugs, feature requests, and planned enhancements.  
-If you have ideas or want to help shape the roadmap, please open a new issue or join the discussion on existing ones.
+See the [open issues](https://github.com/irisonia/ServicePathMapper/issues) for bugs, feature requests, and planned enhancements.  
+If you encounter a bug or have feedback or ideas, please open a new issue or join the discussion on existing ones.
+Pull requests are not being accepted at this time.
 
 ---
 
@@ -125,7 +122,7 @@ If you have ideas or want to help shape the roadmap, please open a new issue or 
 - **Set an Upper Limit for max-threads Argument**  
   https://github.com/irisonia/ServicePathMapper/issues/3
 
-We welcome feedback and value contributions.
+Feedback is welcome, and I truly hope you benefit from the project!
 
 ---
 
