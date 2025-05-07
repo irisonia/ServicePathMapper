@@ -1,0 +1,8 @@
+TEST_RESULT_ACTUAL = 'actual'
+TEST_RESULT_ENTITIES = 'entities'
+
+TESTS_OUTPUT_PATHS = 'paths'
+TESTS_OUTPUT_CONFIG_STATS = 'config_stats'
+TESTS_OUTPUT_PARTICIPATION_CTRS = 'participation_counters'
+TESTS_OUTPUT_EXCEPTION = 'exception'
+TESTS_OUTPUT_LOG_FILE_NAME = 'log_file_name'

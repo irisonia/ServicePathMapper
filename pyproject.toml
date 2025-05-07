@@ -1,0 +1,64 @@
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+name = "servicepathmapper"
+version = "0.1.0"
+description = 'Map and analyze service-based paths between servers in a distributed system, honoring policy constraints'
+authors = ["Iris Sonia Avigdor <irisonia@gmail.com>"]
+readme = "README.md"
+license = "MIT"
+packages = [
+    { include = "servicepathmapper", from = "src" },
+]
+include = [
+    "version.py"
+]
+[tool.poetry.dependencies]
+python = ">=3.10"
+
+[tool.poetry.scripts]
+service-path-mapper = "src.servicepathmapper.service_path_mapper:main"
+
+[tool.poetry.urls]
+repository = "https://github.com/irisonia/servicepathmapper"
+
+[tool.poetry.group.dev.dependencies]
+pytest = ">=7.0"
+pytest-cov = ">=4.0"
+black = ">=23.3.0"
+isort = ">=5.10.1"
+flake8 = ">=6.0.0"
+
+[tool.poetry.group.test.dependencies]
+pytest = ">=6.0.0"
+pytest-mock = "*"
+
+[tool.pytest.ini_options]
+pythonpath = [
+  ".",
+  "src",
+  "tests"
+]
+minversion = "0.1.0"
+addopts = "-ra -q --import-mode=importlib --cov=src --cov-report=xml --cov-report=term-missing"
+testpaths = ["tests"]
+
+[tool.coverage.run]
+source = ["src"]
+
+[tool.coverage.report]
+fail_under = 90
+
+[tool.black]
+line-length = 100
+target-version = ['py39', 'py310', 'py311', 'py312']
+
+[tool.isort]
+profile = "black"
+line-length = 100
+
+[tool.flake8]
+max-line-length = 100
+extend-ignore = "E203"

@@ -1,0 +1,147 @@
+import concurrent.futures
+import json
+from pathlib import Path
+from typing import TypeAlias
+
+import servicepathmapper.common.strings.file_names as file_names
+import servicepathmapper.common.types.paths_type_hints as paths_types
+from servicepathmapper.common.logger import Logger
+from servicepathmapper.common.strings.help import OUTPUT_PATHS_HELP_STR
+from servicepathmapper.common.types.entities import Entities
+from servicepathmapper.common.types.exception_types.code_behavior_alert import CodeBehaviorAlert
+from servicepathmapper.common.types.exception_types.filesystem_error import FileSystemError
+from servicepathmapper.common.types.output_generation_params import OutputGenerationParams
+from servicepathmapper.io.output_generators.base import OutputGenerator
+
+
+class FileSystemOutputGenerator(OutputGenerator):
+    def __init__(self, out_dir_path: Path) -> None:
+        self._create_directory(out_dir_path, False)
+        Logger.create_file_logger(out_dir_path / file_names.OUTPUT_LOG_FILE_NAME)
+
+    def _generate_output(self, output_params: OutputGenerationParams) -> int:
+        self._output_stats(output_params)
+        if not output_params.stats_only:
+            if output_params.paths_by_servers_group_by_len is None:
+                raise CodeBehaviorAlert(alert='Paths is unexpectedly None!')
+            self._output_paths(output_params)
+        return 0
+
+    def _create_directory(self, path: Path, exist_ok: bool = False) -> None:
+        path.mkdir(parents=True, exist_ok=exist_ok)
+
+    def _output_stats(self, params: OutputGenerationParams) -> None:
+        stats = params.config_stats
+        if params.participation_counters is not None:
+            stats.update(params.participation_counters)
+        self._write_stats(params.out_dir_path, stats)
+
+    def _output_paths(self, output_params: OutputGenerationParams) -> None:
+        working_threads: list[concurrent.futures.Future] = []
+        with concurrent.futures.ThreadPoolExecutor(max_workers=output_params.max_threads) as executor:
+            for sz, groups_of_sz in enumerate(output_params.paths_by_servers_group_by_len):
+                if groups_of_sz:
+                    output_dir = output_params.out_dir_path / f'{file_names.OUTPUT_FILE_NAME_PART_PATH_LEN}_{sz}'
+                    self._create_directory(output_dir, True)
+                    for sequence_num, group_and_paths in enumerate(groups_of_sz.items()):
+                        file_path = output_dir / str(sequence_num)
+                        future = executor.submit(
+                            self._output_group,
+                            entities=output_params.entities,
+                            file_path=file_path,
+                            group_and_paths=group_and_paths,
+                            groups_only=output_params.server_groups_only,
+                        )
+                        future.file_path = file_path
+                        working_threads.append(future)
+
+        for future in concurrent.futures.as_completed(working_threads):
+            try:
+                future.result()
+            except Exception as e:
+                file_path = getattr(future, 'file_path', 'unknown')
+                raise FileSystemError(
+                    title='Failed to write file.',
+                    values={'path': str(file_path), 'error': str(e)},
+                    help_topics=[OUTPUT_PATHS_HELP_STR]
+                )
+
+    def _output_group(
+            self,
+            entities: Entities,
+            file_path: Path,
+            group_and_paths: tuple[paths_types.ServersGroupId, list[paths_types.ServiceBasedPath]],
+            groups_only: bool,
+    ) -> None:
+        group_members_ids_to_names = {
+            server_id: entities.server_id_to_name[server_id] for server_id in group_and_paths[0]
+        }
+        self._write_group_members(file_path, sorted(group_members_ids_to_names.values()))
+
+        if not groups_only:
+            formatted_paths = self._group_paths_to_final_str(
+                entities=entities,
+                paths_of_group=group_and_paths[1],
+                group_members_ids_to_names=group_members_ids_to_names,
+            )
+            self._write_group_paths(file_path, formatted_paths)
+
+    def _write_stats(self, out_dir_path: Path, stats: dict) -> None:
+        stats_file = out_dir_path / file_names.OUTPUT_STATS_FILE_NAME
+        stats_file.write_text(json.dumps(stats, indent=4), encoding='utf-8')
+
+    def _write_group_members(self, file_path: Path, server_names: list[str]) -> None:
+        group_file = file_path.with_name(file_path.name + '_' + file_names.OUTPUT_FILE_NAME_PART_SERVERS_GROUP)
+        group_file.write_text('\n'.join(server_names), encoding='utf-8')
+
+    def _write_group_paths(self, file_path: Path, formatted_paths: str) -> None:
+        file_path.write_text(formatted_paths, encoding='utf-8')
+
+    def _group_paths_to_final_str(
+            self,
+            entities: Entities,
+            paths_of_group: list[paths_types.ServiceBasedPath],
+            group_members_ids_to_names: dict[paths_types.ServerId, str]
+    ) -> str:
+        names_paths = [
+            _ids_path_to_names_path(
+                entities=entities,
+                ids_path=path,
+                group_members_ids_to_names=group_members_ids_to_names,
+            )
+            for path in paths_of_group
+        ]
+        return '\n'.join([_format_path_line(path) for path in names_paths])
+
+
+_NamesPath: TypeAlias = list[tuple[str, list[str]]]
+
+
+def _ids_path_to_names_path(
+        entities: Entities,
+        ids_path: paths_types.ServiceBasedPath,
+        group_members_ids_to_names: dict[paths_types.ServerId, str]
+) -> _NamesPath:
+    names_path: _NamesPath = [(group_members_ids_to_names[ids_path[0][0]], [])]
+    for idx in range(1, len(ids_path)):
+        provider_name = group_members_ids_to_names[ids_path[idx][0]]
+        names_path.append(
+            (
+                provider_name,
+                sorted(
+                    [
+                        entities.service_id_to_name[service_id]
+                        for service_id in ids_path[idx][1]
+                    ]
+                ),
+            )
+        )
+    return names_path
+
+
+def _format_path_line(names_path: _NamesPath) -> str:
+    parts = [names_path[0][0]]
+    for provider, services in names_path[1:]:
+        services_str = ', '.join(services)
+        parts.append(f'[{services_str}] {provider}')
+    return ' '.join(parts)

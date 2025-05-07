@@ -1,0 +1,6 @@
+OUTPUT_DEFAULT_ROOT_DIR_NAME: str = 'output_service_path_mapper'
+OUTPUT_DIR_NAME_TEMPLATE = '%Y_%m_%d__%H_%M_%S'
+OUTPUT_LOG_FILE_NAME = 'log.txt'
+OUTPUT_STATS_FILE_NAME = 'stats.json'
+OUTPUT_FILE_NAME_PART_SERVERS_GROUP = 'servers_group'
+OUTPUT_FILE_NAME_PART_PATH_LEN = 'path_len'

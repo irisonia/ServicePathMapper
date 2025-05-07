@@ -1,0 +1,135 @@
+# ServicePathMapper
+
+[![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
+[![Python Version](https://img.shields.io/badge/python-3.10+-blue)](https://www.python.org/downloads/release/python-3100/)
+[![GitHub last commit](https://img.shields.io/github/last-commit/irisonia/ServicePathMapper)](https://github.com/irisonia/ServicePathMapper)
+[![codecov](https://codecov.io/gh/irisonia/ServicePathMapper/branch/main/graph/badge.svg)](https://codecov.io/gh/irisonia/ServicePathMapper)
+[![Made with love](https://img.shields.io/badge/Made%20with-%E2%9D%A4-red)](https://github.com/irisonia) by [irisonia](https://github.com/irisonia)
+
+Map and analyze service-based paths between servers in a distributed system, honoring policy constraints.
+
+---
+
+## Features
+
+- Discover all service-based paths between two servers, honoring policy constraints.
+- Simulate "what-if" scenarios (e.g., server/service outages).
+- Enforce security policies by requiring or forbidding specific servers/services in paths.
+- Analyze and optimize resource allocation and configuration.
+- Output detailed statistics about both the system and the resulting paths.
+
+---
+
+## Use Case Examples
+
+- **Path Discovery:**  
+  Find all service-based paths between two servers in a distributed system, and analyze the participation of each server and service.
+
+- **What-if Scenarios:**  
+  Apply flexible constraints to explore “what-if” scenarios.  
+  *Example: Outages Simulation* - List any servers/services as 'forbidden' (not allowed to participate in paths) and observe impacts such as:
+    - Changes in the number of valid paths.
+    - Shifts in the participation of other servers and services.
+    - Services now lacking providers or clients.
+
+- **Security Enforcement:**  
+  Force paths to necessarily include designated servers and services, supporting security policy enforcement.
+
+- **Optimize System Resources:**  
+    - **Resource Allocation:** Analyze potential workload distribution across servers.
+    - **Configuration Cleanup:** Identify services that have clients but no providers, or providers but no clients.
+
+---
+
+## Installation
+
+1. **Clone the repository:**  
+git clone https://github.com/irisonia/ServicePathMapper
+
+2. **Navigate to the project directory (where "pyproject.toml" is located):**  
+cd servicepathmapper
+
+3. **Install the requirements and the program in editable mode:**  
+pip install -r requirements.txt
+pip install -e .
+
+---
+
+## Usage
+
+1. **Navigate to the project directory (where "pyproject.toml" is located):**  
+cd servicepathmapper
+
+2. **Run the program:**  
+python3 -m servicepathmapper.service_path_mapper --config path/to/your/config.json
+
+For help about the config.json, use `--help-config`.
+
+**Example minimal config:**
+
+```json
+{
+  "clients-dir": "path/to/clients/dir",
+  "providers-dir": "path/to/providers/dir",
+  "src-server": "name of the server to start all paths",
+  "dst-server": "name of the server to end all paths",
+  "max-path-len": 8
+}
+```
+
+---
+
+### Input & Output
+
+- Use `--help` or `-h` for detailed input and configuration options.
+- **Key outputs:**
+  - Paths between servers (with connecting services), grouped by server groups.
+  - Statistical analysis of the system and resulting paths.
+- For details, see `--help-output`, `--help-paths`, and `--help-stats`.
+- Log messages are saved in `log.txt`.
+
+---
+
+## Testing
+
+- Run all tests using:
+pytest
+
+---
+
+## Developer Notes
+
+- **Version Management:**  
+To update the project version, use the `version_update_tool.py` script in the project root.  
+Please follow [Semantic Versioning](https://semver.org/) (SemVer) when updating.
+
+- **CodeBehaviorAlert:**  
+If the program ever raises a `CodeBehaviorAlert`, this indicates an internal consistency or logic issue.  
+**Please open a GitHub issue** describing the error and the circumstances that led to it.  
+Before opening a new issue, check the [open issues](https://github.com/irisonia/ServicePathMapper/issues) to see if it’s already reported or being discussed.  
+Feel free to comment, add information, or suggest fixes on existing issues-your feedback is valuable!
+
+- **Contributing & Roadmap:**  
+Contributions are welcome! See the [open issues](https://github.com/irisonia/ServicePathMapper/issues) for bugs, feature requests, and planned enhancements.  
+If you have ideas or want to help shape the roadmap, please open a new issue or join the discussion on existing ones.
+
+---
+
+## Coming Soon
+
+- **Detection and reporting of unreachable servers and dead end servers.**  
+  See [issue #1](https://github.com/yourusername/yourrepo/issues/1) for details.
+
+We welcome feedback and contributions-if this feature is important to you, let us know or join the discussion!
+
+---
+
+## Contact
+
+For questions, suggestions, or support, please [open an issue](https://github.com/irisonia/ServicePathMapper/issues) or contact [irisonia](https://github.com/irisonia) directly on GitHub.
+
+---
+
+## License
+
+This project is licensed under the MIT License - see [LICENSE](LICENSE) for details.
