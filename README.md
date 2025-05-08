@@ -74,18 +74,6 @@ Map and analyze service-based paths between servers in a distributed system, hon
 * For help about the config.json, use `--help-config`.
 * For many usage examples, see the `tests` directory.
 
-**Example minimal config:**
-
-```json
-{
-  "clients-dir": "path/to/clients/dir",
-  "providers-dir": "path/to/providers/dir",
-  "src-server": "name of the server to start all paths",
-  "dst-server": "name of the server to end all paths",
-  "max-path-len": 8
-}
-```
-
 ---
 
 ### Minimal Run Example
