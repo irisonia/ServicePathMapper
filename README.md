@@ -13,9 +13,13 @@ Map and analyze service-based paths between servers in a distributed system, hon
 ## Features
 
 - Discover all service-based paths between two servers, honoring policy constraints.
+
 - Simulate "what-if" scenarios, such as server/service outages.
+
 - Enforce security policies by requiring or forbidding specific servers/services in paths.
+
 - Analyze and optimize resource allocation and configuration.
+
 - Output detailed statistics about both the system and the resulting paths.
 
 ---
@@ -25,16 +29,18 @@ Map and analyze service-based paths between servers in a distributed system, hon
 - **Path Discovery:**  
   Find all service-based paths between two servers in a distributed system, and analyze the participation of each server and service.
 
+
 - **What-if Scenarios:**  
   Apply flexible constraints to explore “what-if” scenarios.  
-  Example:  
-  *Outages Simulation* - List any servers/services as 'forbidden' (not allowed to participate in paths) and observe impacts such as:
+  Example: *Outages Simulation* - List any servers/services as 'forbidden' from participating in paths, and observe impacts such as:
     - Changes in the number of valid paths.
     - Shifts in the participation of other servers and services.
     - Services now lacking providers or clients.
 
+
 - **Security Enforcement:**  
   Force paths to necessarily include designated servers and services, supporting security policy enforcement.
+
 
 - **Optimize System Resources:**  
     - **Resource Allocation:** Analyze potential workload distribution across servers.
@@ -44,16 +50,20 @@ Map and analyze service-based paths between servers in a distributed system, hon
 
 ## Installation
 
-1. **Clone the repository:**  
+1. **Clone the repository:**
+
 `git clone https://github.com/irisonia/ServicePathMapper`
 
 
 2. **Navigate to the project directory** (where "pyproject.toml" is located):
-`cd servicepathmapper`  
+
+`cd servicepathmapper`
 
 
 3. **Install the requirements and the program in editable mode:**
-`pip3 install -r requirements.txt`  
+
+`pip3 install -r requirements.txt`
+
 `pip3 install -e .`
 
 ---
@@ -63,15 +73,16 @@ Map and analyze service-based paths between servers in a distributed system, hon
 1. Make sure you have the input prepared. [See the minimal example](#minimal-run-example)
 
 
-2. **Navigate to the project directory** (where "pyproject.toml" is located):  
+2. **Navigate to the project directory** (where "pyproject.toml" is located):
+
 `cd servicepathmapper`
 
 
-3. **Run the program:**  
+3. **Run the program:**
+
 `python3 -m servicepathmapper.service_path_mapper --config path/to/your/config.json`
 
 
-* For help about the config.json, use `--help-config`.
 * For many usage examples, see the `tests` directory.
 
 ---
@@ -82,6 +93,7 @@ Map and analyze service-based paths between servers in a distributed system, hon
 listing, one per line, the services this server is a client of (clients dir) or a provider of (providers dir).
 The most minimal content would include just the src-server and dst-server, connected by a single service:
 
+
 ```
 clients/
 └── Server1        # file contains: Service1
@@ -90,8 +102,11 @@ providers/
 └── Server2        # file contains: Service1
 ```
 
-2. Have a config file, for example:  
+
+2. Have a config file, for example:
+
 `config.json`
+
 
 ```json
 {
@@ -104,7 +119,9 @@ providers/
 }
 ```
 
+
 3. Run, and observe output. In this minimal example, the output would be:
+
 
 ```
 my_output_dir/
@@ -115,52 +132,72 @@ my_output_dir/
 └── stats.json
 ```  
 
+
 Inside file `0`, you will find a single service-based path:
+
 
 ```
 Server1 [Service1] Server2
 ```
 
+
 Inside file `0_servers_group`, you will find the participating servers:
+
 
 ```
 Server1
 Server2
 ```
 
-In `stats.json` you will find the config stats and the participation counters.  
-In `log.txt` you will find the raw config input and meaningful messages.
+
+Inside `stats.json` you will find the config stats and the participation counters.
+
+Inside `log.txt` you will find the raw config input and meaningful messages.
 
 ---
 
 ### Input & Output
 
-- Use `--help` or `-h` for detailed input and configuration options.
-- **Key outputs:**
+- **Input:**
+
+  - Use `--help` or `-h` for input options details.
+
+  - Use `--help-config` for configuration file details.
+
+
+- **Output:**
+
   - Paths between servers, with connecting services, grouped by server groups and by path lengths.
+  
+    - For details, see `--help-output` and `--help-paths`.
+
+  
   - Statistical analysis of the system and the resulting paths.
-- For details, see `--help-output`, `--help-paths`, and `--help-stats`.
-- Log messages are saved in `log.txt`.
+    - For details, see `--help-output` and `--help-stats`.
+
+
+  - Configuration summary and log messages are saved in `log.txt`.
 
 ---
 
 ## Testing
 
-- Run all tests using:
-`pytest`
+Run all tests using: `pytest`
 
 ---
 
 ## Developer Notes
 
-- **CodeBehaviorAlert:**  
-If the program ever raises a `CodeBehaviorAlert`, this indicates an internal consistency or logic issue.  
-**Please open a GitHub issue** describing the error and the circumstances that led to it.  
-Before opening a new issue, check the [open issues](https://github.com/irisonia/ServicePathMapper/issues) to see if it’s already reported or being discussed.  
+- **CodeBehaviorAlert:**
+
+If the program ever raises a `CodeBehaviorAlert`, this indicates an internal consistency or logic issue.
+**Please open a GitHub issue** describing the error and the circumstances that led to it.
+Before opening a new issue, check the [open issues](https://github.com/irisonia/ServicePathMapper/issues) to see if it’s already reported or being discussed.
 Feel free to comment, add information, or suggest fixes on existing issues-your feedback is valuable!
 
-- **Contributing & Roadmap:**  
-See the [open issues](https://github.com/irisonia/ServicePathMapper/issues) for bugs, feature requests, and planned enhancements.  
+- **Contributing & Roadmap:**
+
+See the [open issues](https://github.com/irisonia/ServicePathMapper/issues) for bugs, feature requests, and planned enhancements.
 If you encounter a bug or have feedback or ideas, please open a new issue or join the discussion on existing ones.
 Pull requests are not being accepted at this time.
 
@@ -168,13 +205,18 @@ Pull requests are not being accepted at this time.
 
 ## Coming Soon
 
-- **Detect and Report Unreachable and Dead-End Servers for System Analysis and Runtime Optimization**  
+- **Detect and Report Unreachable and Dead-End Servers for System Analysis and Runtime Optimization**
+
   https://github.com/irisonia/ServicePathMapper/issues/1
 
-- **Allow Splitting Stats Output into Separate Files in a Dedicated Folder**  
+
+- **Allow Splitting Stats Output into Separate Files in a Dedicated Folder**
+
   https://github.com/irisonia/ServicePathMapper/issues/2
 
-- **Set an Upper Limit for max-threads Argument**  
+
+- **Set an Upper Limit for max-threads Argument**
+
   https://github.com/irisonia/ServicePathMapper/issues/3
 
 Feedback is welcome, and I truly hope you benefit from the project!
