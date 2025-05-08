@@ -78,6 +78,8 @@ For help about the config.json, use `--help-config`.
 }
 ```
 
+* For more usage examples, see the `tests` directory.
+
 ---
 
 ### Input & Output
