@@ -58,13 +58,14 @@ Map and analyze service-based paths between servers in a distributed system, hon
 
 ## Usage
 
-1. **Navigate to the project directory** (where "pyproject.toml" is located):  
-`cd servicepathmapper`
+1. Make sure you have the input prepared. [See the minimal example](#minimal-run-example)  
+2. **Navigate to the project directory** (where "pyproject.toml" is located):  
+`cd servicepathmapper`  
+3. **Run the program:**  
+`python3 -m servicepathmapper.service_path_mapper --config path/to/your/config.json`  
 
-2. **Run the program:**  
-`python3 -m servicepathmapper.service_path_mapper --config path/to/your/config.json`
-
-For help about the config.json, use `--help-config`.
+* For help about the config.json, use `--help-config`.  
+* For many usage examples, see the `tests` directory.  
 
 **Example minimal config:**
 
@@ -77,8 +78,57 @@ For help about the config.json, use `--help-config`.
   "max-path-len": 8
 }
 ```
+---
 
-* For more usage examples, see the `tests` directory.
+### Minimal Run Example
+
+1. Have a `clients` dir and a `providers` dir, each containing a file per server, named after the server,  
+listing, one per line, the services this server is client of (clients dir) or provider of (providers dir).
+The most minimal content would include just the src-server and dst-server, connected by a single service:
+
+```
+clients/
+  Server1  (contains: service1)
+providers/
+  Server2  (contains: service1)
+```
+
+2. Have a config file, for example:  
+`config.json`
+```json
+{
+  "clients-dir": "./clients",
+  "providers-dir": "./providers",
+  "src-server": "Server1",
+  "dst-server": "Server2",
+  "max-path-len": 5,
+  "output-dir": "./my_output_dir"
+}
+```
+
+3. Run, and observe output. For this example, the output would be:
+
+```
+my_output_dir/
+└── path_len_2/
+    └──  0
+    └──  0_servers_group
+└── log.txt
+└── stats.json
+```  
+Inside file `0`, you will find a single service-based path:
+```
+Server1 [Service1] Server2
+```
+
+Inside file `0_servers_group`, you will find the participating servers:
+```
+Server1
+Server2
+```
+
+Inside the `stats.json` there will be the config stats and the participation counters,  
+and the log you will find the config and meaningful messages.
 
 ---
 
