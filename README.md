@@ -206,7 +206,7 @@ Pull requests are not being accepted at this time.
 
 ---
 
-## Coming Soon
+## New Features Coming Soon
 
 - [Detect and Report Unreachable and Dead-End Servers for System Analysis and Runtime Optimization](https://github.com/irisonia/ServicePathMapper/issues/1) 
 
