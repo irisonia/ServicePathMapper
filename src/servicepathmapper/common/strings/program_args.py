@@ -36,148 +36,149 @@ ARG_CLIENTS_DIR_HELP_STR = (
     '(required) path to directory containing client files'
     '\na client file is named after a server and lists, one per line, all the services accessible to this server'
     '\nexamples:'
-    '\n  cli: --clients-dir [path/to/clients/directory]'
-    '\n  config: "clients-dir": "path/to/clients/directory"'
+    f'\n  cli: --{ARG_CLIENTS_DIR} [path/to/clients/directory]'
+    f'\n  config: "{ARG_CLIENTS_DIR}": "path/to/clients/directory"'
 )
 
 ARG_PROVIDERS_DIR_HELP_STR = (
     '(required) path to directory containing provider files'
     '\na provider file is named after a server and lists, one per line, all the services provided by this server'
     '\nexamples:'
-    '\n  cli: --providers-dir [path/to/providers/directory]'
-    '\n  config: "providers-dir": "path/to/providers/directory"'
+    f'\n  cli: --{ARG_PROVIDERS_DIR} [path/to/providers/directory]'
+    f'\n  config: "{ARG_PROVIDERS_DIR}": "path/to/providers/directory"'
 )
 
 ARG_SRC_SERVER_HELP_STR = (
-    "(required) paths' start point server"
+    '(required) starting server for paths'
     '\nexamples:'
-    '\n  cli: --src-server [src_server]'
-    '\n  config: "src-server": "src_server"'
+    f'\n  cli: --{ARG_SRC_SERVER} [src_server]'
+    f'\n  config: "{ARG_SRC_SERVER}": "src_server"'
 )
 
 ARG_DST_SERVER_HELP_STR = (
-    "(required) paths' end point server"
+    '(required) destination server for paths'
     '\nexamples:'
-    '\n  cli: --dst-server [dst_server]'
-    '\n  config: "dst-server": "dst_server"'
+    f'\n  cli: --{ARG_DST_SERVER} [dst_server]'
+    f'\n  config: "{ARG_DST_SERVER}": "dst_server"'
 )
 
 ARG_MIN_PATH_LEN_HELP_STR = (
     'minimum length of any path'
-    f'\nmust be {constants.ARG_DEFAULT_MIN_PATH_LEN} or greater, and not greater than max-path-len'
+    f'\nmust be {constants.ARG_DEFAULT_MIN_PATH_LEN} or greater, and not greater than {ARG_MAX_PATH_LEN}'
     f'\nif not specified, default is {constants.ARG_DEFAULT_MIN_PATH_LEN}'
     '\nexamples:'
-    '\n  cli: --min-path-len 2'
-    '\n  config: "min-path-len": 2'
+    f'\n  cli: --{ARG_MIN_PATH_LEN} 2'
+    f'\n  config: "{ARG_MIN_PATH_LEN}": 2'
 )
 
 ARG_MAX_PATH_LEN_HELP_STR = (
     '(required) maximum length of any path'
-    f'\nlimited to {constants.PATH_LEN_MAX_LIMIT} (can be carefully changed, if necessary)'
+    f'\nlimited to {constants.PATH_LEN_MAX_LIMIT} (can be changed with caution)'
     '\nexamples:'
-    '\n  cli: --max-path-len 4'
-    '\n  config: "max-path-len": 4'
+    f'\n  cli: --{ARG_MAX_PATH_LEN} 4'
+    f'\n  config: "{ARG_MAX_PATH_LEN}": 4'
 )
 
 ARG_MANDATORY_SERVERS_HELP_STR = (
     'path to file that lists, one per line, names of servers that must participate in every path'
     '\nexamples:'
-    '\n  cli: --mandatory-servers [path/to/mandatory/servers/file]'
-    '\n  config: "mandatory-servers": "path/to/mandatory/servers/file"'
+    f'\n  cli: --{ARG_MANDATORY_SERVERS} [path/to/mandatory/servers/file]'
+    f'\n  config: "{ARG_MANDATORY_SERVERS}": "path/to/mandatory/servers/file"'
     '\nnotes:'
-    '\n- src-server and dst-server servers are implicitly mandatory'
+    f'\n- {ARG_SRC_SERVER} and {ARG_DST_SERVER} servers are implicitly mandatory'
 )
 
 ARG_ALLOWED_SERVERS_HELP_STR = (
     'path to file that lists, one per line, names of servers allowed to participate in paths'
     '\nif not specified, all servers are allowed by default'
     '\nexamples:'
-    '\n  cli: --allowed-servers [path/to/allowed/servers/file]'
-    '\n  config: "allowed-servers": "path/to/allowed/servers/file"'
+    f'\n  cli: --{ARG_ALLOWED_SERVERS} [path/to/allowed/servers/file]'
+    f'\n  config: "{ARG_ALLOWED_SERVERS}": "path/to/allowed/servers/file"'
     '\nnotes:'
     '\n- mandatory servers are implicitly allowed'
-    '\n- either supply allowed-servers or forbidden-servers, but not both'
+    f'\n- either supply {ARG_ALLOWED_SERVERS} or {ARG_FORBIDDEN_SERVERS}, but not both'
 )
 
 ARG_FORBIDDEN_SERVERS_HELP_STR = (
     'path to file that lists, one per line, names of servers forbidden from participating in paths'
+    '\nif not specified, no servers are forbidden by default'
     '\nexamples:'
-    '\n  cli: --forbidden-servers [path/to/forbidden/servers/file]'
-    '\n  config: "forbidden-servers": "path/to/forbidden/servers/file"'
+    f'\n  cli: --{ARG_FORBIDDEN_SERVERS} [path/to/forbidden/servers/file]'
+    f'\n  config: "{ARG_FORBIDDEN_SERVERS}": "path/to/forbidden/servers/file"'
     '\nnotes:'
-    '\n- either supply allowed-servers or forbidden-servers, but not both'
+    f'\n- either supply {ARG_ALLOWED_SERVERS} or {ARG_FORBIDDEN_SERVERS}, but not both'
 )
 
 ARG_MANDATORY_SERVICES_HELP_STR = (
     'path to file that lists, one per line, names of services that must participate in every path'
     '\nexamples:'
-    '\n  cli: --mandatory-services [path/to/mandatory/services/file]'
-    '\n  config: "mandatory-services": "path/to/mandatory/services/file"'
+    f'\n  cli: --{ARG_MANDATORY_SERVICES} [path/to/mandatory/services/file]'
+    f'\n  config: "{ARG_MANDATORY_SERVICES}": "path/to/mandatory/services/file"'
 )
 
 ARG_ALLOWED_SERVICES_HELP_STR = (
     'path to file that lists, one per line, names of services allowed to participate in paths'
     '\nif not specified, all services are allowed by default'
     '\nexamples:'
-    '\n  cli: --allowed-services [path/to/allowed/services/file]'
-    '\n  config: "allowed-services": "path/to/allowed/services/file"'
+    f'\n  cli: --{ARG_ALLOWED_SERVICES} [path/to/allowed/services/file]'
+    f'\n  config: "{ARG_ALLOWED_SERVICES}": "path/to/allowed/services/file"'
     '\nnotes:'
     '\n- mandatory services are implicitly allowed'
-    '\n- either supply allowed-services or forbidden-services, but not both'
+    f'\n- either supply {ARG_ALLOWED_SERVICES} or {ARG_FORBIDDEN_SERVICES}, but not both'
 )
 
 ARG_FORBIDDEN_SERVICES_HELP_STR = (
     'path to file that lists, one per line, names of services forbidden from participating in paths'
     '\nexamples:'
-    '\n  cli: --forbidden-services [path/to/forbidden/services/file]'
-    '\n  config: "forbidden-services": "path/to/forbidden/services/file"'
+    f'\n  cli: --{ARG_FORBIDDEN_SERVICES} [path/to/forbidden/services/file]'
+    f'\n  config: "{ARG_FORBIDDEN_SERVICES}": "path/to/forbidden/services/file"'
     '\nnotes:'
-    '\n- either supply allowed-services or forbidden-services, but not both'
+    f'\n- either supply {ARG_ALLOWED_SERVICES} or {ARG_FORBIDDEN_SERVICES}, but not both'
 )
 
 ARG_STATS_ONLY_HELP_STR = (
-    f'output {file_names.OUTPUT_STATS_FILE_NAME} file only, including config stats and participation counters'
-    '\ndo not output paths files or server group files'
+    'output config stats and participation counters only, do not output paths or server groups'
     '\nexamples:'
-    '\n  cli: --stats-only, --no-stats-only'
-    '\n  config: "stats-only": true, "stats-only": false'
+    f'\n  cli: --{ARG_STATS_ONLY}, --no-{ARG_STATS_ONLY}'
+    f'\n  config: "{ARG_STATS_ONLY}": true, "{ARG_STATS_ONLY}": false'
 )
 
 ARG_CONFIG_STATS_ONLY_HELP_STR = (
-    f'output {file_names.OUTPUT_STATS_FILE_NAME} file only, including only config stats'
-    '\ndo not output paths files, server group files or participation counters'
-    '\nwith this flag, paths are not calculated at all, useful for just analyzing a distributed system'
+    'output config stats only, do not output paths, server groups or participation counters'
+    '\nif set, paths are not calculated at all, useful for just analyzing a distributed system'
     '\nexamples:'
-    '\n  cli: --config-stats-only, --no-config-stats-only'
-    '\n  config: "config-stats-only": true, "config-stats-only": false'
+    f'\n  cli: --{ARG_CONFIG_STATS_ONLY}, --no-{ARG_CONFIG_STATS_ONLY}'
+    f'\n  config: "{ARG_CONFIG_STATS_ONLY}": true, "{ARG_CONFIG_STATS_ONLY}": false'
+    '\nnotes:'
+    f'\nif {ARG_CONFIG_STATS_ONLY}, then {ARG_STATS_ONLY} is implicitly true'
 )
 
 ARG_SERVER_GROUPS_ONLY_HELP_STR = (
     f'output _{file_names.OUTPUT_FILE_NAME_PART_SERVERS_GROUP} files only, do not output paths files'
-    f'\n{file_names.OUTPUT_STATS_FILE_NAME} is unaffected by this flag'
+    '\nstats output is unaffected by this flag'
     '\nexamples:'
-    '\n  cli: --server-groups-only, --no-server-groups-only'
-    '\n  config: "server-groups-only": true, "server-groups-only": false'
+    f'\n  cli: --{ARG_SERVER_GROUPS_ONLY}, --no-{ARG_SERVER_GROUPS_ONLY}'
+    f'\n  config: "{ARG_SERVER_GROUPS_ONLY}": true, "{ARG_SERVER_GROUPS_ONLY}": false'
 )
 
 ARG_MAX_THREADS_HELP_STR = (
     'maximum number of threads the program may use (default is based on cpu count)'
     '\nexamples:'
-    '\n  cli: --max-threads 20'
-    '\n  config: "max-threads": 20'
+    f'\n  cli: --{ARG_MAX_THREADS} 20'
+    f'\n  config: "{ARG_MAX_THREADS}": 20'
 )
 
 ARG_OUTPUT_DIR_HELP_STR = (
     'output directory path; by default, output is placed in a directory named after the run timestamp'
-    f'\nwhich is placed under a common root directory: ./{file_names.OUTPUT_DEFAULT_ROOT_DIR_NAME}'
+    f'\nwhich is placed under a common root directory: "./{file_names.OUTPUT_DEFAULT_ROOT_DIR_NAME}"'
     '\nexamples:'
-    '\n  cli: --output-dir [path/to/output/directory]'
-    '\n  config: "output-dir": "path/to/output/directory"'
+    f'\n  cli: --{ARG_OUTPUT_DIR} [path/to/output/directory]'
+    f'\n  config: "{ARG_OUTPUT_DIR}": "path/to/output/directory"'
 )
 
 ARG_FORCE_LARGE_COMPUTATION_HELP_STR = (
     'override safety checks predicting very large computations and output sizes; use at your own risk'
     '\nexamples:'
-    '\n  cli: --force-large-computation, --no-force-large-computation'
-    '\n  config: "force-large-computation": true, "force-large-computation": false'
+    f'\n  cli: --{ARG_FORCE_LARGE_COMPUTATION}, --no-{ARG_FORCE_LARGE_COMPUTATION}'
+    f'\n  config: "{ARG_FORCE_LARGE_COMPUTATION}": true, "{ARG_FORCE_LARGE_COMPUTATION}": false'
 )

@@ -1,7 +1,7 @@
 PACKAGE_NAME = 'servicepathmapper'
 
 PACKAGE_DESCRIPTION = (
-    f'Map and analyze service-based paths between servers in a distributed system, honoring policy constraints.'
+    f'map and analyze service-based paths between servers in a distributed system, honoring policy constraints'
 )
 
 GIT_PATH = 'https://github.com/irisonia/ServicePathMapper'
