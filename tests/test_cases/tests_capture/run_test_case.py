@@ -1,11 +1,11 @@
 from typing import TypeAlias
 
 from deepdiff import DeepDiff
+
 from servicepathmapper.common.types.entities import Entities
 from servicepathmapper.common.types.paths_type_hints import PathsByServersGroupByLen
 from servicepathmapper.io.output_generators.tests_capture import TestsCaptureOutputGenerator
 from servicepathmapper.service_path_mapper import main
-
 from ... import tests_strings as tests_common
 
 

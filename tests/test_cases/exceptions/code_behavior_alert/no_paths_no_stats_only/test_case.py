@@ -1,4 +1,5 @@
 import pytest
+
 from servicepathmapper.common.types.entities import Entities
 from servicepathmapper.common.types.exception_types.code_behavior_alert import CodeBehaviorAlert
 from servicepathmapper.common.types.output_generation_params import OutputGenerationParams
@@ -22,5 +23,8 @@ def test_generate_output_raises_on_none_paths(tmp_path):
         stats_only=False,
         max_threads=1
     )
-    with pytest.raises(CodeBehaviorAlert):
+    with pytest.raises(CodeBehaviorAlert) as exc_info:
         output_gen._generate_output(params)
+
+    alert = exc_info.value.alert
+    assert 'Paths is unexpectedly None!' in alert

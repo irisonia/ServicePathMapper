@@ -13,7 +13,6 @@ from servicepathmapper.common.types.exception_types.bad_type_error import BadTyp
 from servicepathmapper.common.types.exception_types.bad_value_error import BadValueError
 from servicepathmapper.common.types.exception_types.filesystem_error import FileSystemError
 from servicepathmapper.io.input.validate_args import validate_args
-
 from version import __version__
 
 
@@ -138,8 +137,8 @@ def _create_parser_groups(parser: argparse.ArgumentParser) -> tuple[
 
 
 def _add_args_to_parser_groups(
-    args_group_help: argparse._ArgumentGroup,
-    args_group_config: argparse._ArgumentGroup
+        args_group_help: argparse._ArgumentGroup,
+        args_group_config: argparse._ArgumentGroup
 ) -> None:
     for args_key, args_info in arg_info.ARG_INFO.items():
         metadata = args_info.get(arg_info.ARG_METADATA, 0)

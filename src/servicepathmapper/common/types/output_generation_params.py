@@ -13,8 +13,8 @@ class OutputGenerationParams:
                  entities: Entities,
                  out_dir_path: Path,
                  config_stats: dict,
-                 participation_counters: dict,
-                 paths_by_servers_group_by_len: PathsByServersGroupByLen,
+                 participation_counters: dict | None,
+                 paths_by_servers_group_by_len: PathsByServersGroupByLen | None,
                  stats_only: bool,
                  server_groups_only: bool,
                  max_threads: int):

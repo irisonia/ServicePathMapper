@@ -2,7 +2,6 @@ from pathlib import Path
 
 import servicepathmapper.common.strings.program_args as program_args
 import servicepathmapper.common.strings.stats as output_stats
-
 import tests.tests_strings as tests_common
 from ...run_test_case import run_test_case
 

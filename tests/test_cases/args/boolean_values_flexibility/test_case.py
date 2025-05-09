@@ -1,6 +1,7 @@
 from pathlib import Path
 
 import pytest
+
 import servicepathmapper.common.strings.program_args as program_args
 from servicepathmapper.io.output_generators.tests_dummy import DummyOutputGenerator
 from servicepathmapper.service_path_mapper import main

@@ -1,7 +1,6 @@
+import tests.tests_strings as tests_common
 from servicepathmapper.common.types.output_generation_params import OutputGenerationParams
 from servicepathmapper.io.output_generators.base import OutputGenerator
-
-import tests.tests_strings as tests_common
 
 
 class TestsCaptureOutputGenerator(OutputGenerator):

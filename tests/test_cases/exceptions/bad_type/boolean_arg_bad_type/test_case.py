@@ -1,6 +1,7 @@
 from pathlib import Path
 
 import pytest
+
 import servicepathmapper.common.strings.program_args as program_args
 from servicepathmapper.common.types.exception_types.bad_type_error import BadTypeError
 from servicepathmapper.io.output_generators.tests_dummy import DummyOutputGenerator
