@@ -1,6 +1,7 @@
 from unittest import mock
 
 import pytest
+
 import servicepathmapper.common.strings.program_args as program_args
 from servicepathmapper.common.types.exception_types.filesystem_error import FileSystemError
 from servicepathmapper.io.input.get_args import _load_config_file

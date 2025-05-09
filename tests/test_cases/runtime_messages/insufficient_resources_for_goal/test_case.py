@@ -2,7 +2,6 @@ from pathlib import Path
 
 import servicepathmapper.common.strings.program_args as program_args
 from servicepathmapper.common.constants import PATH_LEN_MAX_LIMIT
-
 from ..run_test_case import run_test_case
 
 

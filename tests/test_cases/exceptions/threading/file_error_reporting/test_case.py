@@ -1,6 +1,7 @@
 from unittest.mock import patch
 
 import pytest
+
 from servicepathmapper.common.types.entities import Entities
 from servicepathmapper.common.types.exception_types.filesystem_error import FileSystemError
 from servicepathmapper.io.output_generators.file_system import FileSystemOutputGenerator

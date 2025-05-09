@@ -1,6 +1,7 @@
 from pathlib import Path
 
 import pytest
+
 from servicepathmapper.common.types.exception_types.filesystem_error import FileSystemError
 from servicepathmapper.io.input.process_args import _read_lines_from_file
 

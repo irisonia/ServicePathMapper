@@ -2,6 +2,7 @@ import tempfile
 from pathlib import Path
 
 import pytest
+
 import servicepathmapper.common.strings.program_args as program_args
 from servicepathmapper.common.types.exception_types.bad_value_error import BadValueError
 from servicepathmapper.io.input.get_args import _load_config_file
