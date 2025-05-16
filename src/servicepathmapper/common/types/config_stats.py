@@ -10,7 +10,7 @@ class ConfigStats:
     """
 
     def __init__(self):
-        self.services_with_clients_no_providers_names = defaultdict(list)
+        self.services_with_clients_no_providers = defaultdict(list)
         self.services_with_providers_no_clients = defaultdict(list)
         self.services_unreachable_for_sole_provider_client = defaultdict(list)
 
@@ -23,7 +23,7 @@ class ConfigStats:
                         stats_strings.OUTPUT_STATS_CLIENTS_COUNTER: len(item[1]),
                         stats_strings.OUTPUT_STATS_CLIENTS: sorted([client for client in item[1]])
                     }
-                    for item in self.services_with_clients_no_providers_names.items()
+                    for item in self.services_with_clients_no_providers.items()
                 ],
                 key=lambda item: (-item[stats_strings.OUTPUT_STATS_CLIENTS_COUNTER],
                                   item[stats_strings.OUTPUT_STATS_SERVICE])

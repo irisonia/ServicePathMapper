@@ -1,4 +1,5 @@
 import json
+from collections import defaultdict
 from pathlib import Path
 
 import servicepathmapper.common.strings.file_names as file_names
@@ -114,12 +115,12 @@ def _get_test_config_stats() -> ConfigStats:
 
 def _get_paths_by_length_by_servers_group() -> PathsByServersGroupByLen:
     return [
-        {},
-        {},
-        {},
-        {
+        defaultdict(list),
+        defaultdict(list),
+        defaultdict(list),
+        defaultdict(list, {
             (2, 0, 1): [[(0, []), (1, [2]), (2, [1, 0])]]
-        }
+        })
     ]
 
 

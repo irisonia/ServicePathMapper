@@ -17,7 +17,7 @@ class Printable(ABC):
         return f'{title}:\n{self.title}{self._format_values()}{self._format_help_topics()}'
 
     def _format_values(self) -> str:
-        return '\n' + '\n'.join(f'{k}={v}' for k, v in self.values.items()) if self.values else ''
+        return '\n' + '\n'.join(f'{k}: {v}' for k, v in self.values.items()) if self.values else ''
 
     def _format_help_topics(self) -> str:
         if self.help_topics:

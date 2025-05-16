@@ -1,6 +1,6 @@
 import logging
 import math
-from functools import partial
+from collections import defaultdict
 from pathlib import Path
 
 import servicepathmapper.common.constants as constants
@@ -28,15 +28,13 @@ def process_program_args(args: dict) -> tuple[Entities, ConfigStats]:
     """
 
     entities = Entities()
-    config_stats = ConfigStats()
     _read_policy_files(args, entities)
     _set_hardcoded_config(args, entities)
-    provider_names, client_names = _init_servers(args, entities)
-    _set_relationships(args=args,
-                       entities=entities,
-                       provider_names=provider_names,
-                       client_names=client_names,
-                       config_stats=config_stats)
+    providers, clients = _init_servers(args, entities)
+    config_stats = _set_relationships(args=args,
+                                      entities=entities,
+                                      providers=providers,
+                                      clients=clients)
     _validate(args, entities)
 
     return entities, config_stats
@@ -48,12 +46,15 @@ def _read_lines_from_file(file_path: Path) -> set[str]:
     try:
         content = file_path.read_text(encoding='utf-8')
         return {line.strip() for line in content.splitlines() if line.strip()}
-    except FileNotFoundError:
-        raise FileSystemError(title='Failed reading from file', values={'path': str(file_path)})
+    except (OSError, UnicodeDecodeError) as e:
+        raise FileSystemError(
+            title='Failed reading file',
+            values={'path': str(file_path), 'error': str(e)}
+        ) from e
 
 
 def _read_policy_files(args: dict, entities: Entities) -> None:
-    """Read from configurated policy files: mandatory, allowed and forbidden servers and services."""
+    """Read from configuration policy files: mandatory, allowed and forbidden servers and services."""
 
     if program_args.ARG_MANDATORY_SERVERS in args:
         entities.mandatory_servers_names = _read_lines_from_file(args[program_args.ARG_MANDATORY_SERVERS])
@@ -83,11 +84,11 @@ def _init_servers(args: dict, entities: Entities) -> tuple[list[str], list[str]]
     """
 
     provider_dir = Path(args[program_args.ARG_PROVIDERS_DIR])
-    provider_names = [f.name for f in provider_dir.iterdir() if f.is_file()]
+    providers = [f.name for f in provider_dir.iterdir() if f.is_file()]
     client_dir = Path(args[program_args.ARG_CLIENTS_DIR])
-    client_names = [f.name for f in client_dir.iterdir() if f.is_file()]
+    clients = [f.name for f in client_dir.iterdir() if f.is_file()]
 
-    for server_name in set(provider_names + client_names):
+    for server_name in set(providers + clients):
         if _is_allowed(name=server_name,
                        mandatory=entities.mandatory_servers_names,
                        allowed=entities.allowed_servers_names,
@@ -96,31 +97,37 @@ def _init_servers(args: dict, entities: Entities) -> tuple[list[str], list[str]]
             entities.server_id_to_name.append(server_name)
             entities.server_name_to_id[server_name] = len(entities.server_id_to_name) - 1
 
-    provider_names = [p for p in provider_names if p in entities.server_name_to_id]
-    client_names = [c for c in client_names if c in entities.server_name_to_id]
-    return provider_names, client_names
+    providers = [p for p in providers if p in entities.server_name_to_id]
+    clients = [c for c in clients if c in entities.server_name_to_id]
+    return providers, clients
 
 
 def _set_relationships(args: dict,
                        entities: Entities,
-                       provider_names: list,
-                       client_names: list,
-                       config_stats: ConfigStats) -> None:
+                       providers: list,
+                       clients: list) -> ConfigStats:
     """Init client-provider relationships between servers-servers and servers-services."""
 
-    def _init_services_of_servers(servers_dir: str, server_names: list, callback):
-        for server_name in server_names:
-            service_names = _read_lines_from_file(Path(servers_dir) / server_name)
-            callback(server_name=server_name, service_names=service_names)
+    config_stats = ConfigStats()
 
-    provider_callback = partial(_init_services_for_provider, entities=entities)
-    client_callback = partial(_init_services_for_client, entities=entities, config_stats=config_stats)
+    for provider in providers:
+        services = _read_lines_from_file(args[program_args.ARG_PROVIDERS_DIR] / provider)
+        _init_services_for_provider(entities=entities, server_name=provider, service_names=services)
 
-    _init_services_of_servers(args[program_args.ARG_PROVIDERS_DIR], provider_names, provider_callback)
-    _init_services_of_servers(args[program_args.ARG_CLIENTS_DIR], client_names, client_callback)
-    _init_services_unreachable_for_sole_provider_client(entities, config_stats)
-    _init_services_provided_but_with_no_clients(entities, config_stats)
+    for client in clients:
+        services = _read_lines_from_file(args[program_args.ARG_CLIENTS_DIR] / client)
+        _init_services_for_client(entities=entities,
+                                  server_name=client,
+                                  service_names=services,
+                                  services_with_clients_no_providers=config_stats.services_with_clients_no_providers)
+
+    config_stats.services_unreachable_for_sole_provider_client = (
+        _init_services_unreachable_for_sole_provider_client(entities))
+    config_stats.services_with_providers_no_clients = (
+        config_stats).services_provided_but_with_no_clients = _init_services_provided_but_with_no_clients(entities)
     _init_providers_per_client(entities)
+
+    return config_stats
 
 
 def _init_services_for_provider(entities: Entities, server_name: str, service_names: set) -> None:
@@ -141,9 +148,9 @@ def _init_services_for_provider(entities: Entities, server_name: str, service_na
 
 
 def _init_services_for_client(entities: Entities,
-                              config_stats: ConfigStats,
                               server_name: str,
-                              service_names: set) -> None:
+                              service_names: set,
+                              services_with_clients_no_providers: defaultdict[str, list]) -> None:
     """A callback. Gather all servers being clients of a service, and all services to which a server is a client."""
 
     server_id = entities.server_name_to_id[server_name]
@@ -158,7 +165,7 @@ def _init_services_for_client(entities: Entities,
                            mandatory=entities.mandatory_services_names,
                            allowed=entities.allowed_services_names,
                            forbidden=entities.forbidden_services_names):
-                config_stats.services_with_clients_no_providers_names[service_name].append(server_name)
+                services_with_clients_no_providers[service_name].append(server_name)
 
 
 def _is_allowed(name: str, mandatory: set, allowed: set, forbidden: set) -> bool:
@@ -176,23 +183,29 @@ def _is_allowed(name: str, mandatory: set, allowed: set, forbidden: set) -> bool
     return name not in forbidden
 
 
-def _init_services_unreachable_for_sole_provider_client(entities: Entities, config_stats: ConfigStats) -> None:
+def _init_services_unreachable_for_sole_provider_client(entities: Entities) -> defaultdict[str, list]:
     """A service where its sole provider is also its sole client."""
+    services_unreachable_for_sole_provider_client = defaultdict(list)
 
     for service, providers in entities.providers_of_service.items():
         if (len(providers) == 1) and (providers == entities.clients_of_service[service]):
             p, = providers
-            config_stats.services_unreachable_for_sole_provider_client[p].append(service)
+            services_unreachable_for_sole_provider_client[p].append(service)
+
+    return services_unreachable_for_sole_provider_client
 
 
-def _init_services_provided_but_with_no_clients(entities: Entities, stats: ConfigStats) -> None:
+def _init_services_provided_but_with_no_clients(entities: Entities) -> defaultdict[str, list]:
     """Find any service that has allowed providers, but no allowed clients."""
+    services_with_providers_no_clients = defaultdict(list)
 
     for service_id in entities.providers_of_service:
         if ((service_id not in entities.clients_of_service)
                 or (len(entities.clients_of_service[service_id]) == 0)):
-            stats.services_with_providers_no_clients[service_id] = sorted(
+            services_with_providers_no_clients[service_id] = sorted(
                 p for p in entities.providers_of_service[service_id])
+
+    return services_with_providers_no_clients
 
 
 def _init_providers_per_client(entities: Entities) -> None:
@@ -221,12 +234,7 @@ def _validate(args: dict, entities: Entities) -> None:
                      second=entities.forbidden_services_names,
                      title_first='mandatory services',
                      title_second='forbidden services')
-    _assert_exists(type_title='servers',
-                   required=entities.mandatory_servers_names,
-                   existing=entities.server_name_to_id)
-    _assert_exists(type_title='services',
-                   required=entities.mandatory_services_names,
-                   existing=entities.service_name_to_id)
+
     _validate_program_complexity(args=args, entities=entities)
 
 
@@ -238,28 +246,20 @@ def _assert_disjoint(title_type: str, first: set, second: set, title_first: str,
                          values={title_type: sorted(first & second)})
 
 
-def _assert_exists(type_title: str, required: set[str], existing: dict) -> None:
-    """Assert that all required elements exist in the dictionary of existing elements."""
-
-    missing = [r for r in required if r not in existing]
-    if missing:
-        raise LogicError(title='mandatory but missing', values={type_title: sorted(missing)})
-
-
 def _validate_program_complexity(args: dict, entities: Entities) -> None:
     """Warn or block if estimated computation exceeds safe complexity thresholds."""
 
     complexity = _calc_complexity(args, entities)
     if complexity > constants.SAFEGUARD_THRESHOLD_COMPLEXITY:
         if args[program_args.ARG_FORCE_LARGE_COMPUTATION]:
-            Logger.log(
+            Logger.log(str(
                 SafeguardError(
                     title=f'Predicted complexity exceeds safe limits!',
                     values={
                         'Predicted complexity': f'{complexity:,}',
                         'Safe complexity': f'{constants.SAFEGUARD_THRESHOLD_COMPLEXITY:,}'
                     },
-                    help_topics=[program_args.ARG_FORCE_LARGE_COMPUTATION]),
+                    help_topics=[program_args.ARG_FORCE_LARGE_COMPUTATION])),
                 level=logging.WARNING)
         else:
             raise SafeguardError(

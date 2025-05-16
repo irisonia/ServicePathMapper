@@ -11,8 +11,8 @@ from tests.tests_common import config_to_jsonable
 @pytest.fixture
 def tmp_config(tmp_path: Path) -> str:
     """Create a temporary config file."""
+
     config_data = _get_config()
-    config_data[program_args.ARG_MAX_PATH_LEN] = 5
     config_file_path = tmp_path / "test_config.json"
     with config_file_path.open('w') as config_file:
         json.dump(config_to_jsonable(config_data), config_file)
@@ -33,7 +33,7 @@ def _get_config() -> dict:
     return {
         program_args.ARG_CLIENTS_DIR: current_dir / 'clients',
         program_args.ARG_PROVIDERS_DIR: current_dir / 'providers',
-        program_args.ARG_MAX_PATH_LEN: 3,
+        program_args.ARG_MAX_PATH_LEN: 7,
         program_args.ARG_MIN_PATH_LEN: 2,
         program_args.ARG_SRC_SERVER: 'b',
         program_args.ARG_DST_SERVER: 'a'

@@ -13,7 +13,6 @@ def tmp_config(tmp_path: Path) -> str:
     """Create a temporary config file."""
 
     config_data = _get_config()
-    config_data[program_args.ARG_STATS_ONLY] = False
     config_file_path = tmp_path / "test_config.json"
     with open(config_file_path, 'w') as config_file:
         json.dump(config_to_jsonable(config_data), config_file)

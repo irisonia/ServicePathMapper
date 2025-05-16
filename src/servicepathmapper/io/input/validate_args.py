@@ -72,24 +72,19 @@ def _validate_src_and_dst_servers(args: dict) -> None:
             values={program_args.ARG_SRC_SERVER: src_server, program_args.ARG_DST_SERVER: dst_server},
             help_topics=[program_args.ARG_SRC_SERVER, program_args.ARG_DST_SERVER]
         )
-    if not (clients_dir / src_server).is_file():
-        raise FileSystemError(
-            title=f'file {src_server} not found in {args[program_args.ARG_CLIENTS_DIR]}',
-            values={
-                program_args.ARG_SRC_SERVER: args[program_args.ARG_SRC_SERVER],
-                program_args.ARG_CLIENTS_DIR: args[program_args.ARG_CLIENTS_DIR]
-            },
-            help_topics=[program_args.ARG_SRC_SERVER, program_args.ARG_CLIENTS_DIR]
-        )
-    if not (providers_dir / dst_server).is_file():
-        raise FileSystemError(
-            title=f'file {dst_server} not found in {args[program_args.ARG_PROVIDERS_DIR]}',
-            values={
-                program_args.ARG_DST_SERVER: args[program_args.ARG_DST_SERVER],
-                program_args.ARG_PROVIDERS_DIR: args[program_args.ARG_PROVIDERS_DIR]
-            },
-            help_topics=[program_args.ARG_DST_SERVER, program_args.ARG_PROVIDERS_DIR]
-        )
+
+    def is_file(dir_name, dir_arg, server_name, server_arg):
+        if not (dir_name / server_name).is_file():
+            raise BadValueError(
+                title=f'file {server_arg} not found in {args[dir_arg]}',
+                values={
+                    server_arg: args[server_arg],
+                    dir_arg: args[dir_arg]
+                },
+                help_topics=[server_arg, dir_arg]
+            )
+    is_file(clients_dir, program_args.ARG_CLIENTS_DIR, src_server, program_args.ARG_SRC_SERVER)
+    is_file(providers_dir, program_args.ARG_PROVIDERS_DIR, dst_server, program_args.ARG_DST_SERVER)
 
 
 def _validate_path_length(args: dict) -> None:
@@ -100,6 +95,13 @@ def _validate_path_length(args: dict) -> None:
             help_topics=[program_args.ARG_MAX_PATH_LEN]
         )
 
+    def _validate_min_value(arg_name: str, value: int, min_value: int) -> None:
+        if value < min_value:
+            raise BadValueError(
+                title=f'{arg_name} must not be smaller than {min_value}',
+                values={arg_name: value},
+                help_topics=[arg_name]
+            )
     _validate_min_value(arg_name=program_args.ARG_MIN_PATH_LEN,
                         value=args[program_args.ARG_MIN_PATH_LEN],
                         min_value=constants.ARG_DEFAULT_MIN_PATH_LEN)
@@ -115,15 +117,6 @@ def _validate_path_length(args: dict) -> None:
                 program_args.ARG_MAX_PATH_LEN: args[program_args.ARG_MAX_PATH_LEN]
             },
             help_topics=[program_args.ARG_MIN_PATH_LEN, program_args.ARG_MAX_PATH_LEN]
-        )
-
-
-def _validate_min_value(arg_name: str, value: int, min_value: int) -> None:
-    if value < min_value:
-        raise BadValueError(
-            title=f'{arg_name} must not be smaller than {min_value}',
-            values={arg_name: value},
-            help_topics=[arg_name]
         )
 
 

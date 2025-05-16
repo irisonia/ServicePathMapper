@@ -46,11 +46,11 @@ def main(test_config: dict = None, output_generator: OutputGenerator = None) -> 
 
     except Exception as e:
         if test_config is not None:
-            print(f'{str(e)}', file=sys.stderr)
+            print(f'\n{str(e)}', file=sys.stderr)
             raise e
 
         try:
-            Logger.log(f'{str(e)}', logging.ERROR)
+            Logger.log(f'\n{str(e)}', logging.ERROR)
         except Exception:
             pass
         return 1

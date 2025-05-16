@@ -122,8 +122,7 @@ def _make_parser() -> argparse.ArgumentParser:
     return parser
 
 
-def _create_parser_groups(parser: argparse.ArgumentParser) -> tuple[
-    argparse._ArgumentGroup, argparse._ArgumentGroup, argparse._ArgumentGroup]:
+def _create_parser_groups(parser: argparse.ArgumentParser) -> tuple[Any, Any, Any]:
     args_group_general = parser.add_argument_group('general options')
     args_group_general.add_argument('--version', action='version', version=f'%(prog)s {__version__}')
     args_group_general.add_argument('--config', dest='config', help='config file path', metavar='[path]')
@@ -136,10 +135,7 @@ def _create_parser_groups(parser: argparse.ArgumentParser) -> tuple[
     return args_group_general, args_group_help, args_group_config
 
 
-def _add_args_to_parser_groups(
-        args_group_help: argparse._ArgumentGroup,
-        args_group_config: argparse._ArgumentGroup
-) -> None:
+def _add_args_to_parser_groups(args_group_help: Any, args_group_config: Any) -> None:
     for args_key, args_info in arg_info.ARG_INFO.items():
         metadata = args_info.get(arg_info.ARG_METADATA, 0)
         if arg_info.ArgMetadata.HELP & metadata:
@@ -262,8 +258,15 @@ def _normalize_arg_int(key: str, val: Any) -> int | None:
     return val
 
 
-def _normalize_arg_path(key: str, val: Any) -> Path | None:
-    if val is not None and not isinstance(val, Path):
+def _normalize_arg_path(key: str, val: str | Path) -> Path | None:
+    illegal_paths = ['', '.', '..']
+    if (val is None) or (str(val).strip() in illegal_paths):
+        raise BadValueError(
+            title=f'Illegal value for arg {key}',
+            values={key: val},
+            help_topics=[key]
+        )
+    if not isinstance(val, Path):
         return Path(val)
     return val
 
