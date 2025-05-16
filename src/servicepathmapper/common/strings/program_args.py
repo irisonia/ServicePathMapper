@@ -169,7 +169,7 @@ ARG_MAX_THREADS_HELP_STR = (
 )
 
 ARG_OUTPUT_DIR_HELP_STR = (
-    'output directory path; by default, output is placed in a directory named after the run timestamp'
+    'path to output directory; by default, output is placed in a directory named after the run timestamp,'
     f'\nwhich is placed under a common root directory: "./{file_names.OUTPUT_DEFAULT_ROOT_DIR_NAME}"'
     '\nexamples:'
     f'\n  cli: --{ARG_OUTPUT_DIR} [path/to/output/directory]'

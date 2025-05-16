@@ -4,16 +4,15 @@ from deepdiff import DeepDiff
 
 from servicepathmapper.common.types.entities import Entities
 from servicepathmapper.common.types.paths_type_hints import PathsByServersGroupByLen
+from servicepathmapper.common.types.tests_capture import TestsCapture
 from servicepathmapper.io.output_generators.tests_capture import TestsCaptureOutputGenerator
 from servicepathmapper.service_path_mapper import main
-from ... import tests_strings as tests_common
+from tests.tests_strings import TESTS_OUTPUT_PATHS, TESTS_OUTPUT_PARTICIPATION_CTRS, TESTS_OUTPUT_CONFIG_STATS
 
 
 def run_test_case(config: dict, expected_results: dict) -> None:
-    res = main(config, TestsCaptureOutputGenerator())
-    entities = res[tests_common.TEST_RESULT_ENTITIES]
-    actual_results = res[tests_common.TEST_RESULT_ACTUAL]
-    check_results_tests_capture(entities=entities, actual=actual_results, expected=expected_results)
+    res: TestsCapture = main(config, TestsCaptureOutputGenerator())
+    check_results_tests_capture(entities=res.entities, actual=res.actual_results, expected=expected_results)
 
 
 def check_results_tests_capture(entities: Entities, actual: dict, expected: dict) -> None:
@@ -30,19 +29,19 @@ def check_results_tests_capture(entities: Entities, actual: dict, expected: dict
         if field_in_expected:
             cmp_func(actual[output_section], expected[output_section], *args)
 
-    compare_output(tests_common.TESTS_OUTPUT_CONFIG_STATS, _compare_config_stats)
-    compare_output(tests_common.TESTS_OUTPUT_PARTICIPATION_CTRS, _compare_participation_ctrs)
-    compare_output(tests_common.TESTS_OUTPUT_PATHS, _compare_paths, entities)
+    compare_output(TESTS_OUTPUT_CONFIG_STATS, _compare_config_stats)
+    compare_output(TESTS_OUTPUT_PARTICIPATION_CTRS, _compare_participation_ctrs)
+    compare_output(TESTS_OUTPUT_PATHS, _compare_paths, entities)
 
 
 def _compare_config_stats(actual, expected) -> None:
     diff = DeepDiff(actual, expected, ignore_order=True)
-    assert not diff, f'{tests_common.TESTS_OUTPUT_CONFIG_STATS} differ:\nactual:\n{actual}\nexpected:\n{expected}'
+    assert not diff, f'{TESTS_OUTPUT_CONFIG_STATS} differ:\nactual:\n{actual}\nexpected:\n{expected}'
 
 
 def _compare_participation_ctrs(actual, expected) -> None:
     diff = DeepDiff(actual, expected, ignore_order=True)
-    assert not diff, f'{tests_common.TESTS_OUTPUT_PARTICIPATION_CTRS} differ:\nactual:\n{actual}\nexpected:\n{expected}'
+    assert not diff, f'{TESTS_OUTPUT_PARTICIPATION_CTRS} differ:\nactual:\n{actual}\nexpected:\n{expected}'
 
 
 _PathsByServersGroupWithNames: TypeAlias = dict[tuple[str, ...], list[list[tuple[str, list[str]]]]]

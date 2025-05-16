@@ -4,12 +4,12 @@ import sys
 import servicepathmapper.common.strings.help as program_help
 import servicepathmapper.common.strings.program_args as program_args
 import servicepathmapper.io.input.arg_info as arg_info
-import tests.tests_strings as tests_common
 from servicepathmapper.common.logger import Logger
 from servicepathmapper.common.strings.about import PACKAGE_NAME
 from servicepathmapper.common.types.config_stats import ConfigStats
 from servicepathmapper.common.types.entities import Entities
 from servicepathmapper.common.types.participation_in_paths_counters import ParticipationInPathsCounters
+from servicepathmapper.common.types.tests_capture import TestsCapture
 from servicepathmapper.io.input.get_args import get_program_args
 from servicepathmapper.io.input.process_args import process_program_args
 from servicepathmapper.io.output_generators.base import OutputGenerator
@@ -17,7 +17,7 @@ from servicepathmapper.io.output_generators.file_system import FileSystemOutputG
 from servicepathmapper.logic.paths import map_paths
 
 
-def main(test_config: dict = None, output_generator: OutputGenerator = None) -> int | dict:
+def main(test_config: dict = None, output_generator: OutputGenerator = None) -> TestsCapture | int:
     try:
         Logger.create_console_logger()
 
@@ -39,10 +39,7 @@ def main(test_config: dict = None, output_generator: OutputGenerator = None) -> 
                    output_generator=output_generator)
 
         if test_config is not None:
-            return {
-                tests_common.TEST_RESULT_ENTITIES: entities,
-                tests_common.TEST_RESULT_ACTUAL: res
-            }
+            return TestsCapture(entities=entities, actual_results=res)
 
     except Exception as e:
         if test_config is not None:

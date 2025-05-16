@@ -3,7 +3,7 @@ from pathlib import Path
 
 VERSION = '0.1.0'
 
-with open('pyproject.toml', 'r+') as f:
+with open('../../pyproject.toml', 'r+') as f:
     content = f.read()
     content = re.sub(r'version\s*=\s*".*"', f'version = "{VERSION}"', content)
     f.seek(0)

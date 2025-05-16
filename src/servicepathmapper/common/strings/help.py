@@ -71,16 +71,18 @@ OUTPUT_PATHS_HELP_STR = (
     '\nStructure of a single service-based path in the paths file:'
     f'\n  {program_args.ARG_SRC_SERVER} [comma-separated list of connecting services] ... {program_args.ARG_DST_SERVER}'
     '\n\nNotes:'
-    f'\n  - To not output the actual paths, but still output the server groups files, use `--{program_args.ARG_SERVER_GROUPS_ONLY}`.'
-    f'\n  - To not output paths nor server groups, but just the stats file, use `--{program_args.ARG_STATS_ONLY}`.'
-    f'\n  - To output config stats only, and not calculate paths at all, use `--{program_args.ARG_CONFIG_STATS_ONLY}`.'
+    '\n  - To not output paths, yet output the server groups that make them, '
+    f'use `--{program_args.ARG_SERVER_GROUPS_ONLY}`.'
+    f'\n  - To output only the stats, but not the paths or their server groups, use `--{program_args.ARG_STATS_ONLY}`.'
+    '\n  - To output only the config stats, and not calculate paths at all, '
+    f'use `--{program_args.ARG_CONFIG_STATS_ONLY}`.'
     '\n'
 )
 
 OUTPUT_HELP_STR = (
     'Output of Service Path Mapper:'
-    '\nBy default, program output is placed in a directory named after the run timestamp, under a common root '
-    f'named `{file_names.OUTPUT_DEFAULT_ROOT_DIR_NAME}`.'
+    '\nBy default, program output is placed in a directory named after the run timestamp,'
+    f'\nwhich is placed under a common root directory `./{file_names.OUTPUT_DEFAULT_ROOT_DIR_NAME}`.'
     f'\nTo place the output in a different location, use `--{program_args.ARG_OUTPUT_DIR}`.'
     '\nThe program output consists of:'
     f'\n  - Paths and server groups: for details, see `--{program_args.ARG_HELP_PATHS}`.'

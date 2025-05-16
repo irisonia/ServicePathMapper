@@ -13,7 +13,7 @@ from servicepathmapper.common.types.exception_types.bad_type_error import BadTyp
 from servicepathmapper.common.types.exception_types.bad_value_error import BadValueError
 from servicepathmapper.common.types.exception_types.filesystem_error import FileSystemError
 from servicepathmapper.io.input.validate_args import validate_args
-from version import __version__
+from servicepathmapper.version import __version__
 
 
 def get_program_args(test_config: dict | None = None) -> tuple[dict, set]:

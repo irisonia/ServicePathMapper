@@ -1,6 +1,3 @@
-TEST_RESULT_ACTUAL = 'actual'
-TEST_RESULT_ENTITIES = 'entities'
-
 TESTS_OUTPUT_PATHS = 'paths'
 TESTS_OUTPUT_CONFIG_STATS = 'config_stats'
 TESTS_OUTPUT_PARTICIPATION_CTRS = 'participation_counters'

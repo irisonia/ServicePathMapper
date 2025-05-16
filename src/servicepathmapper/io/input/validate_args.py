@@ -83,6 +83,7 @@ def _validate_src_and_dst_servers(args: dict) -> None:
                 },
                 help_topics=[server_arg, dir_arg]
             )
+
     is_file(clients_dir, program_args.ARG_CLIENTS_DIR, src_server, program_args.ARG_SRC_SERVER)
     is_file(providers_dir, program_args.ARG_PROVIDERS_DIR, dst_server, program_args.ARG_DST_SERVER)
 
@@ -102,6 +103,7 @@ def _validate_path_length(args: dict) -> None:
                 values={arg_name: value},
                 help_topics=[arg_name]
             )
+
     _validate_min_value(arg_name=program_args.ARG_MIN_PATH_LEN,
                         value=args[program_args.ARG_MIN_PATH_LEN],
                         min_value=constants.ARG_DEFAULT_MIN_PATH_LEN)

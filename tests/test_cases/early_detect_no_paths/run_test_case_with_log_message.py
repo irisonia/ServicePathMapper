@@ -9,7 +9,7 @@ def run_test_case_with_log_message(config: {},
                                    expected_common_title: str,
                                    caplog) -> None:
     res = main(config, TestsCaptureOutputGenerator())
-    assert not res[tests_common.TEST_RESULT_ACTUAL][tests_common.TESTS_OUTPUT_PATHS]
+    assert not res.actual_results[tests_common.TESTS_OUTPUT_PATHS]
 
     log_text = caplog.text
     assert expected_common_title in log_text, f'Expected log message for '

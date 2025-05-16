@@ -7,5 +7,5 @@ class MissingArgsError(Exception):
 
     def __str__(self) -> str:
         msg = f'Missing required args Error:\n{", ".join(self.missing)}'
-        msg += f'\nRun with option --help to see which arguments are mandatory.'
+        msg += f'\nRun with option --help for details'
         return msg
