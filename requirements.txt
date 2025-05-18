@@ -53,8 +53,6 @@ python-slugify==8.0.4
 PyYAML==6.0.2
 requests==2.32.3
 rich==13.9.4
-# Editable install with no version control (servicepathmapper==0.1.0)
--e /Users/irisavigdor/Desktop/iris/create/python_packages/ServicePathMapper
 setuptools==75.2.0
 six==1.17.0
 text-unidecode==1.3
