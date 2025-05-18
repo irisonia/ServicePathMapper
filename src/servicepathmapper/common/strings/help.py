@@ -26,15 +26,20 @@ CONFIG_HELP_STR = (
 
 OUTPUT_STATS_HELP_STR = (
     'Stats Output of Service Path Mapper:'
-    f'\nThe output file `{file_names.OUTPUT_STATS_FILE_NAME}` contains analysis and statistics of two types:'
+    f'\nThe program provides analysis and statistics of two types:'
     '\n - Config stats: Analysis of the servers and services, and the relationships between them.'
     '\n   The config stats are based on the raw input, and do not require actual creation of paths.'
     '\n - Participation counters: Analysis of server and service participation in the actual mapped paths.'
+    '\nBy default, all config stats and participation counters are written into a single file named '
+    f'"{file_names.OUTPUT_STATS_FILE_NAME}".'
+    f'\nIf `--{program_args.ARG_OUTPUT_STATS_IN_DIR}` is set, each config stat or participation counter is written '
+    f'into a dedicated file under directory "{file_names.OUTPUT_STATS_DIR_NAME}".'
     '\n\nNotes:'
     '\n  - Stats output only considers servers and services that have the potential to participate in paths,'
     '\n    and ignores those ruled out by policy constraints, such as forbidden servers or services.'
     f'\n  - To output stats in full, but no paths or server groups, use `--{program_args.ARG_STATS_ONLY}`.'
     f'\n  - To output config stats only, without mapping paths at all, use `--{program_args.ARG_CONFIG_STATS_ONLY}`.'
+
     '\n\nConfig stats:'
     f'\n`{output_stats.OUTPUT_STATS_SERVICES_HAVING_CLIENTS_BUT_NO_PROVIDERS}`:'
     f'\n{output_stats.OUTPUT_STATS_SERVICES_HAVING_CLIENTS_BUT_NO_PROVIDERS_HELP_STR}'

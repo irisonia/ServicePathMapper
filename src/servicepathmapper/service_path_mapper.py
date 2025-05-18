@@ -110,6 +110,7 @@ def _run(
         paths_by_path_length_by_servers_group=paths,
         server_groups_only=config_args[program_args.ARG_SERVER_GROUPS_ONLY],
         stats_only=config_args[program_args.ARG_STATS_ONLY],
+        stats_in_dir=config_args[program_args.ARG_OUTPUT_STATS_IN_DIR],
         max_threads=config_args[program_args.ARG_MAX_THREADS])
 
 

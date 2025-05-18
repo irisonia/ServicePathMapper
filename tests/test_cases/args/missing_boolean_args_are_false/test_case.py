@@ -1,16 +1,18 @@
 from pathlib import Path
 
 import servicepathmapper.common.strings.program_args as program_args
+from servicepathmapper.io.input import arg_info
 from servicepathmapper.io.input.get_args import get_program_args
 
 
 def test_missing_boolean_args_are_false():
     config = _get_config()
     config, _ = get_program_args(config)
-    assert config[program_args.ARG_STATS_ONLY] is False
-    assert config[program_args.ARG_CONFIG_STATS_ONLY] is False
-    assert config[program_args.ARG_SERVER_GROUPS_ONLY] is False
-    assert config[program_args.ARG_FORCE_LARGE_COMPUTATION] is False
+
+    for args_key, args_info in arg_info.ARG_INFO.items():
+        metadata = args_info.get(arg_info.ARG_METADATA, 0)
+        if arg_info.ArgMetadata.BOOLEAN & metadata:
+            assert config[args_key] is False
 
 
 def _get_config() -> dict:

@@ -22,6 +22,7 @@ ARG_ALLOWED_SERVICES = 'allowed-services'
 ARG_FORBIDDEN_SERVICES = 'forbidden-services'
 ARG_STATS_ONLY = 'stats-only'
 ARG_CONFIG_STATS_ONLY = 'config-stats-only'
+ARG_OUTPUT_STATS_IN_DIR = 'stats-in-dir'
 ARG_SERVER_GROUPS_ONLY = 'server-groups-only'
 ARG_MAX_THREADS = 'max-threads'
 ARG_OUTPUT_DIR = 'output-dir'
@@ -151,6 +152,16 @@ ARG_CONFIG_STATS_ONLY_HELP_STR = (
     f'\n  config: "{ARG_CONFIG_STATS_ONLY}": true, "{ARG_CONFIG_STATS_ONLY}": false'
     '\nnotes:'
     f'\nif {ARG_CONFIG_STATS_ONLY}, then {ARG_STATS_ONLY} is implicitly true'
+)
+
+ARG_OUTPUT_STATS_IN_DIR_HELP_STR = (
+    'write each config stat or participation counter into a dedicated file under directory '
+    f'"{file_names.OUTPUT_STATS_DIR_NAME}'
+    '\nby default, all config stats and participation counters are written into a single file named '
+    f'"{file_names.OUTPUT_STATS_FILE_NAME}"'
+    '\nexamples:'
+    f'\n  cli: --{ARG_OUTPUT_STATS_IN_DIR}, --no-{ARG_OUTPUT_STATS_IN_DIR}'
+    f'\n  config: "{ARG_OUTPUT_STATS_IN_DIR}": true, "{ARG_OUTPUT_STATS_IN_DIR}": false'
 )
 
 ARG_SERVER_GROUPS_ONLY_HELP_STR = (

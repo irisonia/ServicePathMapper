@@ -206,11 +206,15 @@ Pull requests are not being accepted at this time.
 
 ---
 
+## Latest Added Feature
+
+- [Allow Splitting Stats Output into Separate Files in a Dedicated Folder](https://github.com/irisonia/ServicePathMapper/issues/2)
+
+---
+
 ## New Features Coming Soon
 
 - [Detect and Report Unreachable and Dead-End Servers for System Analysis and Runtime Optimization](https://github.com/irisonia/ServicePathMapper/issues/1) 
-
-- [Allow Splitting Stats Output into Separate Files in a Dedicated Folder](https://github.com/irisonia/ServicePathMapper/issues/2)
 
 - [Set an Upper Limit for max-threads Argument](https://github.com/irisonia/ServicePathMapper/issues/3)
 

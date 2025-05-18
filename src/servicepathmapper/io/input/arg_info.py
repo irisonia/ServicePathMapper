@@ -91,6 +91,10 @@ ARG_INFO = {
         ARG_HELP: program_args.ARG_CONFIG_STATS_ONLY_HELP_STR,
         ARG_METADATA: ArgMetadata.BOOLEAN,
     },
+    program_args.ARG_OUTPUT_STATS_IN_DIR: {
+        ARG_HELP: program_args.ARG_OUTPUT_STATS_IN_DIR_HELP_STR,
+        ARG_METADATA: ArgMetadata.BOOLEAN,
+    },
     program_args.ARG_SERVER_GROUPS_ONLY: {
         ARG_HELP: program_args.ARG_SERVER_GROUPS_ONLY_HELP_STR,
         ARG_METADATA: ArgMetadata.BOOLEAN,

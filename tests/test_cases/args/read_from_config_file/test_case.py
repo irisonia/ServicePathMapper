@@ -36,6 +36,7 @@ def test_read_from_config_file(monkeypatch, tmp_config) -> None:
     assert args[program_args.ARG_MAX_THREADS] == 100
     assert args[program_args.ARG_MIN_PATH_LEN] == 6
     assert args[program_args.ARG_OUTPUT_DIR] == current_dir / 'out_dir'
+    assert args[program_args.ARG_OUTPUT_STATS_IN_DIR] is True
     assert args[program_args.ARG_PROVIDERS_DIR] == current_dir / 'providers'
     assert args[program_args.ARG_SERVER_GROUPS_ONLY] is True
     assert str(args[program_args.ARG_SRC_SERVER]) == 'b'
@@ -58,6 +59,7 @@ def _get_config() -> dict:
         program_args.ARG_MAX_THREADS: 100,
         program_args.ARG_MIN_PATH_LEN: 6,
         program_args.ARG_OUTPUT_DIR: current_dir / 'out_dir',
+        program_args.ARG_OUTPUT_STATS_IN_DIR: True,
         program_args.ARG_PROVIDERS_DIR: current_dir / 'providers',
         program_args.ARG_SERVER_GROUPS_ONLY: True,
         program_args.ARG_SRC_SERVER: 'b',

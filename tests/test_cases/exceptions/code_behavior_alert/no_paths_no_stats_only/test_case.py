@@ -10,9 +10,9 @@ class DummyEntities(Entities):
     pass
 
 
-def test_generate_output_raises_on_none_paths(tmp_path):
+def test_generate_output_raises_code_behavior_alert(tmp_path, mocker):
     output_dir = tmp_path / "output_subdir"
-    output_gen = FileSystemOutputGenerator(output_dir)
+
     params = OutputGenerationParams(
         entities=DummyEntities(),
         out_dir_path=output_dir,
@@ -21,10 +21,14 @@ def test_generate_output_raises_on_none_paths(tmp_path):
         paths_by_servers_group_by_len=None,
         server_groups_only=False,
         stats_only=False,
+        stats_in_dir=False,
         max_threads=1
     )
-    with pytest.raises(CodeBehaviorAlert) as exc_info:
-        output_gen._generate_output(params)
 
-    alert = exc_info.value.alert
-    assert 'Paths is unexpectedly None!' in alert
+    mocker.patch(
+        "servicepathmapper.io.output_generators.file_system._output_stats",
+        return_value=None
+    )
+
+    with pytest.raises(CodeBehaviorAlert, match="Paths is unexpectedly None!"):
+        FileSystemOutputGenerator(output_dir)._generate_output(params)

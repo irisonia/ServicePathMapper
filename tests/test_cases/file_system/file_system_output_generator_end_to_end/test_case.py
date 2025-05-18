@@ -11,7 +11,7 @@ from servicepathmapper.common.types.paths_type_hints import PathsByServersGroupB
 from servicepathmapper.io.output_generators.file_system import FileSystemOutputGenerator
 
 
-def test_filesystem_output_generator(tmp_path: Path) -> None:
+def test_file_system_output_generator_end_to_end(tmp_path: Path) -> None:
     output_dir = Path(tmp_path) / 'output'
     actual_result = _run_output_generator(output_dir)
     _check_result(output_dir, actual_result)
@@ -31,6 +31,7 @@ def _run_output_generator(output_dir_path: Path) -> int:
         paths_by_path_length_by_servers_group=paths,
         server_groups_only=False,
         stats_only=False,
+        stats_in_dir=False,
         max_threads=1
     )
 
@@ -109,7 +110,7 @@ def _get_test_entities() -> Entities:
 
 def _get_test_config_stats() -> ConfigStats:
     config_stats = ConfigStats()
-    config_stats.services_with_providers_no_clients = {3: [2]}
+    config_stats._services_with_providers_no_clients = {3: [2]}
     return config_stats
 
 

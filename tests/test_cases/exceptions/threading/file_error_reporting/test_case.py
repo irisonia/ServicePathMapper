@@ -17,6 +17,7 @@ def test_output_paths_raises_filesystem_error_on_write_failure(tmp_path):
         config_stats={},
         participation_counters=None,
         stats_only=False,
+        stats_in_dir=False,
         paths_by_servers_group_by_len=_get_paths(),
         max_threads=1,
         server_groups_only=False,

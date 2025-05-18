@@ -24,11 +24,11 @@ class ParticipationInPathsCounters:
 
         self._count(paths_by_servers_group_by_len)
 
-    def to_json(self) -> dict:
+    def get(self) -> dict:
         services_out_of_scope = (
-                set(self._config_stats.services_with_providers_no_clients)
+                set(self._config_stats._services_with_providers_no_clients)
                 | {item for value in
-                   self._config_stats.services_unreachable_for_sole_provider_client.values()
+                   self._config_stats._services_unreachable_for_sole_provider_client.values()
                    for item
                    in value})
 

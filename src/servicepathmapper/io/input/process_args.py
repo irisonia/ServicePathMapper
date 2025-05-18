@@ -119,11 +119,11 @@ def _set_relationships(args: dict,
         _init_services_for_client(entities=entities,
                                   server_name=client,
                                   service_names=services,
-                                  services_with_clients_no_providers=config_stats.services_with_clients_no_providers)
+                                  services_with_clients_no_providers=config_stats._services_with_clients_no_providers)
 
-    config_stats.services_unreachable_for_sole_provider_client = (
+    config_stats._services_unreachable_for_sole_provider_client = (
         _init_services_unreachable_for_sole_provider_client(entities))
-    config_stats.services_with_providers_no_clients = (
+    config_stats._services_with_providers_no_clients = (
         config_stats).services_provided_but_with_no_clients = _init_services_provided_but_with_no_clients(entities)
     _init_providers_per_client(entities)
 

@@ -27,6 +27,36 @@ class FileSystemOutputGenerator(OutputGenerator):
         return 0
 
 
+def _output_stats(params: OutputGenerationParams) -> None:
+    stats = params.config_stats
+    if params.participation_counters is not None:
+        stats.update(params.participation_counters)
+    _write_stats(params.out_dir_path, stats, params.stats_in_dir)
+
+
+def _write_stats(out_dir_path: Path, stats: dict, stats_in_dir: bool) -> None:
+    if not stats_in_dir:
+        _write_stats_in_single_file(out_dir_path, stats)
+    else:
+        _write_stats_in_dir(out_dir_path, stats)
+
+
+def _write_stats_in_single_file(out_dir_path: Path, stats: dict) -> None:
+    stats_file = out_dir_path / file_names.OUTPUT_STATS_FILE_NAME
+    stats_file.write_text(json.dumps(stats, indent=4), encoding='utf-8')
+
+
+def _write_stats_in_dir(out_dir_path: Path, stats: dict) -> None:
+    stats_dir_path = out_dir_path / file_names.OUTPUT_STATS_DIR_NAME
+    stats_dir_path.mkdir()
+    for stat_key, stat_value in stats.items():
+        stat_file = stats_dir_path / stat_key
+        if stat_value:
+            stat_file.write_text(json.dumps({stat_key: stat_value}, indent=4), encoding='utf-8')
+        else:
+            stat_file.touch()
+
+
 def _output_paths(output_params: OutputGenerationParams) -> None:
     working_threads: list[concurrent.futures.Future] = []
     with concurrent.futures.ThreadPoolExecutor(max_workers=output_params.max_threads) as executor:
@@ -55,18 +85,6 @@ def _output_paths(output_params: OutputGenerationParams) -> None:
                 title='Failed to write file.',
                 values={'path': str(file_path), 'error': str(e)}
             )
-
-
-def _output_stats(params: OutputGenerationParams) -> None:
-    stats = params.config_stats
-    if params.participation_counters is not None:
-        stats.update(params.participation_counters)
-    _write_stats(params.out_dir_path, stats)
-
-
-def _write_stats(out_dir_path: Path, stats: dict) -> None:
-    stats_file = out_dir_path / file_names.OUTPUT_STATS_FILE_NAME
-    stats_file.write_text(json.dumps(stats, indent=4), encoding='utf-8')
 
 
 def _output_group(

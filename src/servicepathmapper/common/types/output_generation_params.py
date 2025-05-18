@@ -16,6 +16,7 @@ class OutputGenerationParams:
                  participation_counters: dict | None,
                  paths_by_servers_group_by_len: PathsByServersGroupByLen | None,
                  stats_only: bool,
+                 stats_in_dir: bool,
                  server_groups_only: bool,
                  max_threads: int):
         self.entities = entities
@@ -24,5 +25,6 @@ class OutputGenerationParams:
         self.participation_counters = participation_counters
         self.paths_by_servers_group_by_len = paths_by_servers_group_by_len
         self.stats_only = stats_only
+        self.stats_in_dir = stats_in_dir
         self.server_groups_only = server_groups_only
         self.max_threads = max_threads
