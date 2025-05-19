@@ -191,34 +191,24 @@ Run all tests using:
 
 ## Developer Notes
 
+Feedback is welcome, and I truly hope you benefit from the project!
+
+Before opening a new issue, please check the [open issues](https://github.com/irisonia/ServicePathMapper/issues) 
+to see if your topic has already been reported or is being discussed.
+
+
 ### CodeBehaviorAlert
 
 If the program ever raises a `CodeBehaviorAlert`, this indicates an internal consistency or logic issue.
+
 **Please open a GitHub issue** describing the error and the circumstances that led to it.
-Before opening a new issue, check the [open issues](https://github.com/irisonia/ServicePathMapper/issues) to see if it’s already reported or being discussed.
-Feel free to comment, add information, or suggest fixes on existing issues-your feedback is valuable!
+
 
 ### Contributing & Roadmap
 
-See the [open issues](https://github.com/irisonia/ServicePathMapper/issues) for bugs, feature requests, and planned enhancements.
-If you encounter a bug or have feedback or ideas, please open a new issue or join the discussion on existing ones.
-Pull requests are not being accepted at this time.
+If you encounter a bug, have feedback, or new ideas, please open a new issue or join the discussion on existing ones.
 
----
-
-## Latest Added Feature
-
-- [Allow Splitting Stats Output into Separate Files in a Dedicated Folder](https://github.com/irisonia/ServicePathMapper/issues/2)
-
----
-
-## New Features Coming Soon
-
-- [Detect and Report Unreachable and Dead-End Servers for System Analysis and Runtime Optimization](https://github.com/irisonia/ServicePathMapper/issues/1) 
-
-- [Set an Upper Limit for max-threads Argument](https://github.com/irisonia/ServicePathMapper/issues/3)
-
-Feedback is welcome, and I truly hope you benefit from the project!
+**Note:** Pull requests are not being accepted at this time.
 
 ---
 
