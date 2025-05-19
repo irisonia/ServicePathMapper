@@ -6,45 +6,34 @@
 [![codecov](https://codecov.io/gh/irisonia/ServicePathMapper/branch/main/graph/badge.svg)](https://codecov.io/gh/irisonia/ServicePathMapper)
 [![Made with love](https://img.shields.io/badge/Made%20with-%E2%9D%A4-red)](https://github.com/irisonia) by [irisonia](https://github.com/irisonia)
 
-Map and analyze service-based paths between servers in a distributed system, honoring policy constraints.
+**A Python tool to map and analyze service-based paths between servers in distributed systems, honoring flexible policy constraints.**
 
 ---
 
-## Features
+## Use Cases
 
-- Discover all service-based paths between two servers, honoring policy constraints.
-
-- Simulate "what-if" scenarios, such as server/service outages.
-
-- Enforce security policies by requiring or forbidding specific servers/services in paths.
-
-- Analyze and optimize resource allocation and configuration.
-
-- Output detailed statistics about both the system and the resulting paths.
-
----
-
-## Use Case Examples
-
-- **Path Discovery:**  
-  Find all service-based paths between two servers in a distributed system, and analyze the participation of each server and service.
+- **Discover All Service-Based Paths Between Two Servers in a Complex Distributed System:**  
+  Results include:
+  - All valid paths, detailing the connected servers and the connecting services, 
+    grouped by path length and server group.
+  - Detailed analysis of server and service participation in the resulting paths.
 
 
-- **What-if Scenarios:**  
-  Apply flexible constraints to explore “what-if” scenarios.  
-  Example: *Outages Simulation* - List any servers/services as 'forbidden' from participating in paths, and observe impacts such as:
-    - Changes in the number of valid paths.
-    - Shifts in the participation of other servers and services.
+- **Apply Policy Constraints to Explore What-If Scenarios:**  
+  Example uses:
+  - *Simulate Outages:*  
+    Mark any servers or services as 'forbidden' from participating in paths, and observe impacts such as:
     - Services now lacking providers or clients.
+    - Changes in the number of valid paths.
+    - Shifts in the participation of other servers and services in paths.
+  - *Security Enforcement:*  
+    Only allow paths that include specific servers and services, supporting security policy enforcement.
 
 
-- **Security Enforcement:**  
-  Force paths to necessarily include designated servers and services, supporting security policy enforcement.
-
-
-- **Optimize System Resources:**  
-    - **Resource Allocation:** Analyze potential workload distribution across servers.
-    - **Configuration Cleanup:** Identify services that have clients but no providers, or providers but no clients.
+- **Analyze Server-Service Relationships:**  
+  Example uses:
+  - **Resource Optimization:** Assess potential workload distribution across servers.
+  - **Configuration Cleanup:** Identify services with clients but no providers, or providers but no clients.
 
 ---
 
@@ -52,20 +41,25 @@ Map and analyze service-based paths between servers in a distributed system, hon
 
 1. **Clone the repository:**
 
-`git clone https://github.com/irisonia/ServicePathMapper`
+```
+git clone https://github.com/irisonia/ServicePathMapper
+```
 
 
 2. **Navigate to the project directory** (where "pyproject.toml" is located):
 
-`cd servicepathmapper`
+```
+cd servicepathmapper
+```
 
 
 3. **Install the requirements and the program in editable mode:**
 
-`pip3 install -r requirements.txt`
+```
+pip3 install -r requirements.txt
 
-
-`pip3 install -e .`
+pip3 install -e .
+```
 
 ---
 
@@ -76,12 +70,17 @@ Map and analyze service-based paths between servers in a distributed system, hon
 
 2. **Navigate to the project directory** (where "pyproject.toml" is located):
 
-`cd servicepathmapper`
+```
+cd servicepathmapper
+```
 
 
 3. **Run the program:**
 
-`python3 -m servicepathmapper.service_path_mapper --config path/to/your/config.json`
+```
+python3 -m servicepathmapper.service_path_mapper --config path/to/your/config.json
+```
+
 
 
 * For many usage examples, see the `tests` directory.
@@ -90,9 +89,12 @@ Map and analyze service-based paths between servers in a distributed system, hon
 
 ### Minimal Run Example
 
+This minimal example demonstrates a direct connection between source and destination servers via a single service.
+
+
 1. Have a `clients` dir and a `providers` dir, each containing a file per server, named after the server,  
 listing, one per line, the services this server is a client of (clients dir) or a provider of (providers dir).
-The most minimal content would include just the src-server and dst-server, connected by a single service:
+The most minimal content would include just the source-server and destination-server, connected by a single service:
 
 
 ```
@@ -106,9 +108,7 @@ providers/
 
 2. Have a config file, for example:
 
-`config.json`
-
-
+**config.json**
 ```json
 {
   "clients-dir": "./clients",
@@ -185,7 +185,9 @@ Inside `log.txt` you will find the raw config input and meaningful messages.
 
 Run all tests using: 
 
-`pytest`
+```
+pytest
+```
 
 ---
 
