@@ -58,8 +58,8 @@ def _write_stats_in_dir(out_dir_path: Path, stats: dict) -> None:
 
 
 def _output_paths(output_params: OutputGenerationParams) -> None:
-    working_threads: list[concurrent.futures.Future] = []
     with concurrent.futures.ThreadPoolExecutor(max_workers=output_params.max_threads) as executor:
+        futures = []
         for sz, groups_of_sz in enumerate(output_params.paths_by_servers_group_by_len):
             if groups_of_sz:
                 output_dir = output_params.out_dir_path / f'{file_names.OUTPUT_FILE_NAME_PART_PATH_LEN}_{sz}'
@@ -74,17 +74,17 @@ def _output_paths(output_params: OutputGenerationParams) -> None:
                         groups_only=output_params.server_groups_only,
                     )
                     future.file_path = file_path
-                    working_threads.append(future)
+                    futures.append(future)
 
-    for future in concurrent.futures.as_completed(working_threads):
-        try:
-            future.result()
-        except Exception as e:
-            file_path = getattr(future, 'file_path', 'unknown')
-            raise FileSystemError(
-                title='Failed to write file.',
-                values={'path': str(file_path), 'error': str(e)}
-            )
+        for future in concurrent.futures.as_completed(futures):
+            try:
+                future.result()
+            except Exception as e:
+                file_path = getattr(future, 'file_path', 'unknown')
+                raise FileSystemError(
+                    title='Failed to write file.',
+                    values={'path': str(file_path), 'error': str(e)}
+                )
 
 
 def _output_group(
