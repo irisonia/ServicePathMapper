@@ -10,6 +10,22 @@
 
 ---
 
+## Table of Contents
+
+- [Use Cases](#use-cases)
+- [Installation](#installation)
+- [Usage](#usage)
+  - [Minimal Run Example](#minimal-run-example)
+- [Input & Output](#input--output)
+- [Testing](#testing)
+- [Developer Notes](#developer-notes)
+  - [CodeBehaviorError](#codebehaviorerror)
+  - [Community Feedback & Roadmap](#community-feedback--roadmap)
+- [Contact](#contact)
+- [License](#license)
+
+---
+
 ## Use Cases
 
 - **Discover All Service-Based Paths Between Two Servers in a Complex Distributed System:**  
@@ -68,11 +84,7 @@ pip3 install -e .
 1. **Make sure you have the input prepared.** [See the minimal example](#minimal-run-example)
 
 
-2. **Navigate to the project directory** (where "pyproject.toml" is located):
-
-```
-cd servicepathmapper
-```
+2. **Ensure you are in the project directory (where "pyproject.toml" is located).**
 
 
 3. **Run the program:**
@@ -89,12 +101,11 @@ python3 -m servicepathmapper.service_path_mapper --config path/to/your/config.js
 
 ### Minimal Run Example
 
-This minimal example demonstrates a direct connection between source and destination servers via a single service.
+The most minimal content would include just the source server and destination server, connected by a single service:
 
 
 1. Have a `clients` dir and a `providers` dir, each containing a file per server, named after the server,  
 listing, one per line, the services this server is a client of (clients dir) or a provider of (providers dir).
-The most minimal content would include just the source-server and destination-server, connected by a single service:
 
 
 ```
@@ -151,9 +162,9 @@ Server2
 ```
 
 
-Inside `stats.json` you will find the config stats and the participation counters.
+Inside **stats.json** you will find the config stats and the participation counters.
 
-Inside `log.txt` you will find the raw config input and meaningful messages.
+Inside **log.txt** you will find the raw config input and meaningful messages.
 
 ---
 
@@ -168,16 +179,15 @@ Inside `log.txt` you will find the raw config input and meaningful messages.
 
 - **Output:**
 
-  - Paths between servers, with connecting services, grouped by server groups and by path lengths.
+  - All paths that abide by the constraints policy, grouped by path lengths and by server groups. 
   
-    - For details, see `--help-output` and `--help-paths`.
+    For details, see `--help-output` and `--help-paths`.
 
-  
   - Statistical analysis of the system and the resulting paths.
-    - For details, see `--help-output` and `--help-stats`.
+  
+    For details, see `--help-output` and `--help-stats`.
 
-
-  - Configuration summary and log messages are saved in `log.txt`.
+  - Configuration summary and log messages are saved in **log.txt**.
 
 ---
 
@@ -193,22 +203,32 @@ pytest
 
 ## Developer Notes
 
-Feedback is welcome, and I truly hope you benefit from the project!
+Feedback is welcome!
 
 Before opening a new issue, please check the [open issues](https://github.com/irisonia/ServicePathMapper/issues) 
 to see if your topic has already been reported or is being discussed.
 
 
-### CodeBehaviorAlert
+### CodeBehaviorError
 
-If the program ever raises a `CodeBehaviorAlert`, this indicates an internal consistency or logic issue.
+If the program ever raises a `CodeBehaviorError`, this indicates an internal consistency or logic issue.
 
-**Please open a GitHub issue** describing the error and the circumstances that led to it.
+**Please open a [GitHub issue](https://github.com/irisonia/ServicePathMapper/issues)** describing the error and the circumstances that led to it.
 
 
-### Contributing & Roadmap
+### Community Feedback & Roadmap
 
-If you encounter a bug, have feedback, or new ideas, please open a new issue or join the discussion on existing ones.
+Check out the [open issues](https://github.com/irisonia/ServicePathMapper/issues) for planned enhancements and feature proposals!
+
+**Upvote** the enhancements that would benefit you most.
+
+**Comment** with your use cases, suggestions, or refinements—your feedback helps prioritize development and ensures new features meet real needs.
+
+If you have ideas for new analytics, stats, or features, feel free to open a new issue or join the discussion.
+
+If you encounter a bug, please open a new issue or join the discussion on existing ones.
+
+Your engagement directly shapes the future of this project!
 
 **Note:** Pull requests are not being accepted at this time.
 
@@ -223,3 +243,7 @@ For questions, suggestions, or support, please [open an issue](https://github.co
 ## License
 
 This project is licensed under the MIT License - see [LICENSE](LICENSE) for details.
+
+---
+
+I truly hope you benefit from this project! Sincerely, Irisonia

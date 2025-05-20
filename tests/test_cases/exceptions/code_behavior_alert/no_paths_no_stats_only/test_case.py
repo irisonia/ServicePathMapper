@@ -1,7 +1,7 @@
 import pytest
 
 from servicepathmapper.common.types.entities import Entities
-from servicepathmapper.common.types.exception_types.code_behavior_alert import CodeBehaviorAlert
+from servicepathmapper.common.types.exception_types.code_behavior_error import CodeBehaviorError
 from servicepathmapper.common.types.output_generation_params import OutputGenerationParams
 from servicepathmapper.io.output_generators.file_system import FileSystemOutputGenerator
 
@@ -10,7 +10,7 @@ class DummyEntities(Entities):
     pass
 
 
-def test_generate_output_raises_code_behavior_alert(tmp_path, mocker):
+def test_generate_output_raises_code_behavior_error(tmp_path, mocker):
     output_dir = tmp_path / "output_subdir"
 
     params = OutputGenerationParams(
@@ -30,5 +30,5 @@ def test_generate_output_raises_code_behavior_alert(tmp_path, mocker):
         return_value=None
     )
 
-    with pytest.raises(CodeBehaviorAlert, match="Paths is unexpectedly None!"):
+    with pytest.raises(CodeBehaviorError, match="Paths is unexpectedly None!"):
         FileSystemOutputGenerator(output_dir)._generate_output(params)

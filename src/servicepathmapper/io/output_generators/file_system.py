@@ -7,7 +7,7 @@ import servicepathmapper.common.strings.file_names as file_names
 import servicepathmapper.common.types.paths_type_hints as paths_types
 from servicepathmapper.common.logger import Logger
 from servicepathmapper.common.types.entities import Entities
-from servicepathmapper.common.types.exception_types.code_behavior_alert import CodeBehaviorAlert
+from servicepathmapper.common.types.exception_types.code_behavior_error import CodeBehaviorError
 from servicepathmapper.common.types.exception_types.filesystem_error import FileSystemError
 from servicepathmapper.common.types.output_generation_params import OutputGenerationParams
 from servicepathmapper.io.output_generators.base import OutputGenerator
@@ -22,7 +22,7 @@ class FileSystemOutputGenerator(OutputGenerator):
         _output_stats(output_params)
         if not output_params.stats_only:
             if output_params.paths_by_servers_group_by_len is None:
-                raise CodeBehaviorAlert(alert='Paths is unexpectedly None!')
+                raise CodeBehaviorError(error='Paths is unexpectedly None!')
             _output_paths(output_params)
         return 0
 
