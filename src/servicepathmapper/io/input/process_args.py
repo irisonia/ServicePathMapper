@@ -1,16 +1,11 @@
-import logging
-import math
 from collections import defaultdict
 from pathlib import Path
 
-import servicepathmapper.common.constants as constants
 import servicepathmapper.common.strings.program_args as program_args
-from servicepathmapper.common.logger import Logger
 from servicepathmapper.common.types.config_stats import ConfigStats
 from servicepathmapper.common.types.entities import Entities
 from servicepathmapper.common.types.exception_types.filesystem_error import FileSystemError
 from servicepathmapper.common.types.exception_types.logic_error import LogicError
-from servicepathmapper.common.types.exception_types.safeguard_error import SafeguardError
 
 
 def process_program_args(args: dict) -> tuple[Entities, ConfigStats]:
@@ -235,8 +230,6 @@ def _validate(args: dict, entities: Entities) -> None:
                      title_first='mandatory services',
                      title_second='forbidden services')
 
-    _validate_program_complexity(args=args, entities=entities)
-
 
 def _assert_disjoint(title_type: str, first: set, second: set, title_first: str, title_second: str) -> None:
     """Assert two containers have no elements in common."""
@@ -244,43 +237,3 @@ def _assert_disjoint(title_type: str, first: set, second: set, title_first: str,
     if not first.isdisjoint(second):
         raise LogicError(title=f'{title_first} and {title_second} must not have any elements in common',
                          values={title_type: sorted(first & second)})
-
-
-def _validate_program_complexity(args: dict, entities: Entities) -> None:
-    """Warn or block if estimated computation exceeds safe complexity thresholds."""
-
-    complexity = _calc_complexity(args, entities)
-    if complexity > constants.SAFEGUARD_THRESHOLD_COMPLEXITY:
-        if args[program_args.ARG_FORCE_LARGE_COMPUTATION]:
-            Logger.log(str(
-                SafeguardError(
-                    title=f'Predicted complexity exceeds safe limits!',
-                    values={
-                        'Predicted complexity': f'{complexity:,}',
-                        'Safe complexity': f'{constants.SAFEGUARD_THRESHOLD_COMPLEXITY:,}'
-                    },
-                    help_topics=[program_args.ARG_FORCE_LARGE_COMPUTATION])),
-                level=logging.WARNING)
-        else:
-            raise SafeguardError(
-                title='Predicted complexity exceeds safe limits.',
-                values={
-                    'Predicted complexity': f'{complexity:,}',
-                    'Safe complexity': f'{constants.SAFEGUARD_THRESHOLD_COMPLEXITY:,}'
-                },
-                help_topics=[program_args.ARG_FORCE_LARGE_COMPUTATION]
-            )
-
-
-def _calc_complexity(args: dict, entities: Entities) -> int:
-    complexity = 0
-    min_len = args[program_args.ARG_MIN_PATH_LEN]
-    max_len = args[program_args.ARG_MAX_PATH_LEN]
-    max_threads = args[program_args.ARG_MAX_THREADS]
-    num_servers = len(entities.server_id_to_name)
-
-    for path_len in range(min_len, max_len + 1):
-        combinations = math.comb(num_servers - 2, path_len - 2)
-        complexity += combinations / (max_threads * path_len)
-
-    return math.ceil(complexity)

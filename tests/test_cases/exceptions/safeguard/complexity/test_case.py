@@ -3,9 +3,10 @@ from unittest.mock import patch, MagicMock
 import pytest
 
 import servicepathmapper.common.constants as constants
+import servicepathmapper.common.constants as constants
 from servicepathmapper.common.strings import program_args
 from servicepathmapper.common.types.exception_types.safeguard_error import SafeguardError
-from servicepathmapper.io.input.process_args import _validate_program_complexity
+from servicepathmapper.logic.validate_potential_for_paths import _validate_program_complexity
 
 
 def make_args(force_large=False):
@@ -14,7 +15,7 @@ def make_args(force_large=False):
 
 def test_validate_program_complexity_raises(monkeypatch):
     monkeypatch.setattr(
-        'servicepathmapper.io.input.process_args._calc_complexity',
+        'servicepathmapper.logic.validate_potential_for_paths._calc_complexity',
         lambda args, entities: constants.SAFEGUARD_THRESHOLD_COMPLEXITY + 1
     )
     args = make_args(force_large=False)
@@ -29,12 +30,12 @@ def test_validate_program_complexity_raises(monkeypatch):
 
 def test_validate_program_complexity_warns(monkeypatch):
     monkeypatch.setattr(
-        'servicepathmapper.io.input.process_args._calc_complexity',
+        'servicepathmapper.logic.validate_potential_for_paths._calc_complexity',
         lambda args, entities: constants.SAFEGUARD_THRESHOLD_COMPLEXITY + 1
     )
     args = make_args(force_large=True)
     entities = MagicMock()
 
-    with patch('servicepathmapper.io.input.process_args.Logger.log') as mock_log:
+    with patch('servicepathmapper.common.logger.Logger.log') as mock_log:
         _validate_program_complexity(args, entities)
         assert mock_log.called

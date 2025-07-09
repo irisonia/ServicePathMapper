@@ -1,11 +1,8 @@
-import logging
 from collections import defaultdict
 
-import servicepathmapper.common.strings.program_args as program_args
 import servicepathmapper.common.types.paths_type_hints as paths_types
-from servicepathmapper.common.logger import Logger
 from servicepathmapper.common.types.entities import Entities
-from servicepathmapper.common.types.runtime_messages import EarlyDetectNoPaths
+from servicepathmapper.logic.validate_potential_for_paths import validate_potential_for_paths
 
 
 def map_paths(entities: Entities,
@@ -42,60 +39,10 @@ class _Paths:
         self._server_dead_end_visited_state = defaultdict(set)
 
     def map_paths(self) -> paths_types.PathsByServersGroupByLen:
-        if not self._validate_potential_for_paths():
-            return []
         src_server_id = self._entities.server_name_to_id[self._src_server_name]
         self._visited.add(src_server_id)
         self._dfs([(src_server_id, [])])
         return self._paths_by_size
-
-    def _validate_potential_for_paths(self) -> bool:
-        condition_1 = self._validate_enough_servers_for_min_path_len()
-        condition_2 = self._validate_mandatory_servers_may_participate()
-        condition_3 = self._validate_mandatory_services_may_participate()
-        return condition_1 and condition_2 and condition_3
-
-    def _validate_enough_servers_for_min_path_len(self) -> bool:
-        """Early detect not having enough servers to create a path of the required minimal length."""
-
-        total_servers = len(self._entities.server_name_to_id)
-        if total_servers < self._min_path_len:
-            Logger.log(str(
-                EarlyDetectNoPaths(
-                    title=f'Not enough servers for {program_args.ARG_MIN_PATH_LEN}.',
-                    values={'servers': total_servers, program_args.ARG_MIN_PATH_LEN: self._min_path_len},
-                    help_topics=[program_args.ARG_MIN_PATH_LEN])),
-                level=logging.INFO)
-            return False
-        return True
-
-    def _validate_mandatory_services_may_participate(self) -> bool:
-        """Early detect a required service unable to participate in paths."""
-
-        services = [s for s in self._entities.mandatory_services_names if s not in self._entities.service_name_to_id]
-        if services:
-            Logger.log(str(
-                EarlyDetectNoPaths(
-                    title="Mandatory services cannot participate.",
-                    values={'services': ', '.join(f'"{s}"' for s in services)},
-                    help_topics=[program_args.ARG_MANDATORY_SERVICES])),
-                level=logging.INFO)
-            return False
-        return True
-
-    def _validate_mandatory_servers_may_participate(self) -> bool:
-        """Early detect a required server unable to participate in paths."""
-
-        servers = [s for s in self._entities.mandatory_servers_names if s not in self._entities.server_name_to_id]
-        if servers:
-            Logger.log(str(
-                EarlyDetectNoPaths(
-                    title="Mandatory servers cannot participate.",
-                    values={'servers': ', '.join(f'"{s}"' for s in servers)},
-                    help_topics=[program_args.ARG_MANDATORY_SERVERS])),
-                level=logging.INFO)
-            return False
-        return True
 
     def _dfs(self, path: paths_types.ServiceBasedPath) -> bool:
         dfs_continuity_check_result = self._dfs_continue_check(path)

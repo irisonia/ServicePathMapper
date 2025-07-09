@@ -15,6 +15,7 @@ from servicepathmapper.io.input.process_args import process_program_args
 from servicepathmapper.io.output_generators.base import OutputGenerator
 from servicepathmapper.io.output_generators.file_system import FileSystemOutputGenerator
 from servicepathmapper.logic.paths import map_paths
+from servicepathmapper.logic.validate_potential_for_paths import validate_potential_for_paths
 
 
 def main(test_config: dict = None, output_generator: OutputGenerator = None) -> TestsCapture | int:
@@ -88,7 +89,8 @@ def _run(
 ) -> int | dict:
     paths = None
     participation_in_paths_counters = None
-    if not config_args[program_args.ARG_CONFIG_STATS_ONLY]:
+    if ((not config_args[program_args.ARG_CONFIG_STATS_ONLY])
+            and validate_potential_for_paths(config_args, entities)):
         paths = map_paths(
             entities=entities,
             src_server_name=str(config_args[program_args.ARG_SRC_SERVER]),
