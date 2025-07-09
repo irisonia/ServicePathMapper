@@ -4,7 +4,6 @@ import servicepathmapper.common.strings.file_names as file_names
 import servicepathmapper.common.strings.stats as output_stats
 from servicepathmapper.io.output_generators.file_system import _write_stats
 
-
 _minimal_stats = {
     output_stats.OUTPUT_STATS_SERVICES_HAVING_CLIENTS_BUT_NO_PROVIDERS: [],
     output_stats.OUTPUT_STATS_SERVICES_HAVING_PROVIDERS_BUT_NO_CLIENTS: [

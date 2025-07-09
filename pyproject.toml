@@ -37,9 +37,9 @@ pytest-mock = "*"
 
 [tool.pytest.ini_options]
 pythonpath = [
-  ".",
-  "src",
-  "tests"
+    ".",
+    "src",
+    "tests"
 ]
 minversion = "0.1.0"
 addopts = "-ra -q --import-mode=importlib --cov=src --cov-report=xml --cov-report=term-missing"

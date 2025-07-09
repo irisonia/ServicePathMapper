@@ -1,10 +1,10 @@
 import logging
 import math
 
-from servicepathmapper.common.strings import program_args
-from servicepathmapper.common.types.entities import Entities
 import servicepathmapper.common.constants as constants
 from servicepathmapper.common.logger import Logger
+from servicepathmapper.common.strings import program_args
+from servicepathmapper.common.types.entities import Entities
 from servicepathmapper.common.types.exception_types.safeguard_error import SafeguardError
 from servicepathmapper.common.types.runtime_messages import EarlyDetectNoPaths
 

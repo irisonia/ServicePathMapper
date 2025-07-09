@@ -2,7 +2,6 @@ from collections import defaultdict
 
 import servicepathmapper.common.types.paths_type_hints as paths_types
 from servicepathmapper.common.types.entities import Entities
-from servicepathmapper.logic.validate_potential_for_paths import validate_potential_for_paths
 
 
 def map_paths(entities: Entities,

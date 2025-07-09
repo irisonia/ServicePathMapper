@@ -3,7 +3,6 @@ from unittest.mock import patch, MagicMock
 import pytest
 
 import servicepathmapper.common.constants as constants
-import servicepathmapper.common.constants as constants
 from servicepathmapper.common.strings import program_args
 from servicepathmapper.common.types.exception_types.safeguard_error import SafeguardError
 from servicepathmapper.logic.validate_potential_for_paths import _validate_program_complexity

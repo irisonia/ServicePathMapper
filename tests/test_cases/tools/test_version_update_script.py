@@ -31,4 +31,3 @@ def test_update_version(tmp_path):
     # Assert version.py updated
     version_content = version_py.read_text()
     assert version_content == "__version__ = '1.2.3'\n"
-
