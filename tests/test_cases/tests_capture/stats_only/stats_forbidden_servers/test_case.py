@@ -6,7 +6,7 @@ import tests.tests_strings as tests_common
 from ...run_test_case import run_test_case
 
 
-def test_stats_only_and_config_stats_only_both_false() -> None:
+def test_stats_forbidden_servers() -> None:
     run_test_case(_get_config(), _expected_results)
 
 
@@ -18,8 +18,8 @@ def _get_config():
         program_args.ARG_MAX_PATH_LEN: 5,
         program_args.ARG_SRC_SERVER: "b",
         program_args.ARG_DST_SERVER: "a",
-        program_args.ARG_STATS_ONLY: False,
-        program_args.ARG_CONFIG_STATS_ONLY: False
+        program_args.ARG_FORBIDDEN_SERVERS: current_dir / 'forbidden_servers',
+        program_args.ARG_STATS_ONLY: 1
     }
 
 
@@ -27,11 +27,10 @@ _expected_config_stats = {
     output_stats.OUTPUT_STATS_SERVICES_HAVING_CLIENTS_BUT_NO_PROVIDERS: [
         {
             output_stats.OUTPUT_STATS_SERVICE: "8",
-            output_stats.OUTPUT_STATS_CLIENTS_COUNTER: 3,
+            output_stats.OUTPUT_STATS_CLIENTS_COUNTER: 2,
             output_stats.OUTPUT_STATS_CLIENTS:
                 [
                     "c",
-                    "e",
                     "f"
                 ]
         },
@@ -47,13 +46,12 @@ _expected_config_stats = {
         },
     ],
     output_stats.OUTPUT_STATS_SERVICES_UNREACHABLE_FOR_SOLE_PROVIDER_CLIENT: [
-        {output_stats.OUTPUT_STATS_SERVER: "d", output_stats.OUTPUT_STATS_SERVICES: ["7", "9"]},
-        {output_stats.OUTPUT_STATS_SERVER: "e", output_stats.OUTPUT_STATS_SERVICES: ["11"]}
+        {output_stats.OUTPUT_STATS_SERVER: "d", output_stats.OUTPUT_STATS_SERVICES: ["7", "9"]}
     ]
 }
 
 _expected_participation_in_paths_ctrs = {
-    output_stats.OUTPUT_STATS_ACTUAL_NON_PARTICIPATING_SERVERS: ["e"],
+    output_stats.OUTPUT_STATS_ACTUAL_NON_PARTICIPATING_SERVERS: [],
     output_stats.OUTPUT_STATS_ACTUAL_SERVER_PARTICIPATION_CTR: [
         {
             output_stats.OUTPUT_STATS_SERVER: "a",
@@ -110,27 +108,7 @@ _expected_participation_in_paths_ctrs = {
     ]
 }
 
-_expected_paths = [
-    {},
-    {},
-    {},
-    {
-        ('a', 'b', 'f'): [[('b', []), ('f', ['5']), ('a', ['1'])]],
-        ('a', 'b', 'g'): [[('b', []), ('g', ['5']), ('a', ['1'])]]
-    },
-    {
-        ('a', 'b', 'c', 'd'): [[('b', []), ('c', ['5']), ('d', ['10']), ('a', ['1', '2'])]],
-        ('a', 'b', 'f', 'g'):
-            [
-                [('b', []), ('f', ['5']), ('g', ['12']), ('a', ['1'])],
-                [('b', []), ('g', ['5']), ('f', ['12']), ('a', ['1'])]
-            ]
-    },
-    {}
-]
-
 _expected_results = {
     tests_common.TESTS_OUTPUT_CONFIG_STATS: _expected_config_stats,
-    tests_common.TESTS_OUTPUT_PARTICIPATION_CTRS: _expected_participation_in_paths_ctrs,
-    tests_common.TESTS_OUTPUT_PATHS: _expected_paths
+    tests_common.TESTS_OUTPUT_PARTICIPATION_CTRS: _expected_participation_in_paths_ctrs
 }

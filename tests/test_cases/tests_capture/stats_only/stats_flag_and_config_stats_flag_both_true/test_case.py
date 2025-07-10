@@ -6,7 +6,7 @@ import tests.tests_strings as tests_common
 from ...run_test_case import run_test_case
 
 
-def test_stats_only_and_config_stats_only_both_true() -> None:
+def test_stats_flag_and_config_stats_flag_both_true() -> None:
     run_test_case(_get_config(), _expected_results)
 
 

@@ -10,6 +10,12 @@ OUTPUT_STATS_SERVICES_UNREACHABLE_FOR_SOLE_PROVIDER_CLIENT = 'services_unreachab
 OUTPUT_STATS_SERVICES_UNREACHABLE_FOR_SOLE_PROVIDER_CLIENT_HELP_STR = (
     'When a server is both the sole client and the sole provider of a specific service.'
     '\nBoth the servers and their services are sorted by name, ascending.')
+
+OUTPUT_STATS_DEAD_END_SERVERS = 'dead_end_servers'
+OUTPUT_STATS_DEAD_END_SERVERS_HELP_STR = 'A server that cannot possibly lead to a complete path is a dead-end server'
+OUTPUT_STATS_UNREACHABLE_SERVERS = 'unreachable_servers'
+OUTPUT_STATS_UNREACHABLE_SERVERS_HELP_STR = 'A server that cannot possibly be reached is an unreachable server'
+
 OUTPUT_STATS_ACTUAL_NON_PARTICIPATING_SERVERS = 'actual_non_participating_servers'
 OUTPUT_STATS_ACTUAL_NON_PARTICIPATING_SERVERS_HELP_STR = (
     'Following paths creations, the servers that do not participate in any path.'

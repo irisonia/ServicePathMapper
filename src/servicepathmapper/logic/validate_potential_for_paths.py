@@ -13,7 +13,6 @@ def validate_potential_for_paths(args: dict, entities: Entities) -> bool:
     # validations that also need to raise
     _validate_program_complexity(args, entities)
 
-    # regular validations
     return all(
         [_validate_enough_servers_for_min_path_len(entities, args[program_args.ARG_MIN_PATH_LEN]),
          _validate_mandatory_servers_may_participate(entities),

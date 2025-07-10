@@ -29,7 +29,7 @@ from ...run_test_case import run_test_case
 # therefore: none is to be included in the list of services with clients but no providers.
 
 
-def test_config_stats_only_with_forbidden_servers() -> None:
+def test_config_stats_flag_with_forbidden_servers() -> None:
     run_test_case(_get_config(), _expected_results)
 
 

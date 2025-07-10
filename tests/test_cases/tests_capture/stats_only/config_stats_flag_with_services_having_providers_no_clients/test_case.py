@@ -6,7 +6,7 @@ import tests.tests_strings as tests_common
 from ...run_test_case import run_test_case
 
 
-def test_stats_only_implied_by_config_stats_only() -> None:
+def test_config_stats_flag_with_services_having_providers_no_clients() -> None:
     run_test_case(_get_config(), _expected_results)
 
 
@@ -18,7 +18,6 @@ def _get_config():
         program_args.ARG_MAX_PATH_LEN: 5,
         program_args.ARG_SRC_SERVER: "b",
         program_args.ARG_DST_SERVER: "a",
-        program_args.ARG_STATS_ONLY: False,
         program_args.ARG_CONFIG_STATS_ONLY: True
     }
 
@@ -35,27 +34,27 @@ _expected_config_stats = {
                     "f"
                 ]
         },
-        {
-            output_stats.OUTPUT_STATS_SERVICE: "8000",
-            output_stats.OUTPUT_STATS_CLIENTS_COUNTER: 1,
-            output_stats.OUTPUT_STATS_CLIENTS:
-                [
-                    "x"
-                ]
-        },
     ],
     output_stats.OUTPUT_STATS_SERVICES_HAVING_PROVIDERS_BUT_NO_CLIENTS: [
         {
-            output_stats.OUTPUT_STATS_SERVICE: "7000",
+            output_stats.OUTPUT_STATS_SERVICE: "100",
             output_stats.OUTPUT_STATS_PROVIDERS_COUNTER: 1,
             output_stats.OUTPUT_STATS_PROVIDERS:
                 [
-                    "y"
+                    "b"
+                ]
+        },
+        {
+            output_stats.OUTPUT_STATS_SERVICE: "30",
+            output_stats.OUTPUT_STATS_PROVIDERS_COUNTER: 1,
+            output_stats.OUTPUT_STATS_PROVIDERS:
+                [
+                    "a"
                 ]
         },
     ],
     output_stats.OUTPUT_STATS_SERVICES_UNREACHABLE_FOR_SOLE_PROVIDER_CLIENT: [
-        {output_stats.OUTPUT_STATS_SERVER: "d", output_stats.OUTPUT_STATS_SERVICES: ["7", "9"]},
+        {output_stats.OUTPUT_STATS_SERVER: "d", output_stats.OUTPUT_STATS_SERVICES: ["4000", "7", "9"]},
         {output_stats.OUTPUT_STATS_SERVER: "e", output_stats.OUTPUT_STATS_SERVICES: ["11"]}
     ]
 }

@@ -1,5 +1,4 @@
 from abc import abstractmethod, ABC
-from pathlib import Path
 
 from servicepathmapper.common.types.config_stats import ConfigStats
 from servicepathmapper.common.types.entities import Entities
@@ -12,14 +11,10 @@ class OutputGenerator(ABC):
     def generate_output(
             self,
             entities: Entities,
-            out_dir_path: Path,
             config_stats: ConfigStats,
+            config_args: dict,
             participation_counters: ParticipationInPathsCounters | None,
-            paths_by_path_length_by_servers_group: PathsByServersGroupByLen | None,
-            server_groups_only: bool,
-            stats_only: bool,
-            stats_in_dir: bool,
-            max_threads: int) -> int | dict:
+            paths_by_path_length_by_servers_group: PathsByServersGroupByLen | None) -> int | dict:
         """
         Generates output for the program, either for a regular run or for tests.
 
@@ -32,14 +27,10 @@ class OutputGenerator(ABC):
 
         params = OutputGenerationParams(
             entities=entities,
-            out_dir_path=out_dir_path,
             config_stats=config_stats.get(entities),
+            config_args=config_args,
             participation_counters=None if participation_counters is None else participation_counters.get(),
-            paths_by_servers_group_by_len=paths_by_path_length_by_servers_group,
-            server_groups_only=server_groups_only,
-            stats_only=stats_only,
-            stats_in_dir=stats_in_dir,
-            max_threads=max_threads)
+            paths_by_servers_group_by_len=paths_by_path_length_by_servers_group)
         return self._generate_output(params)
 
     @abstractmethod

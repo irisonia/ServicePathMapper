@@ -9,6 +9,7 @@ from servicepathmapper.common.types.entities import Entities
 from servicepathmapper.common.types.participation_in_paths_counters import ParticipationInPathsCounters
 from servicepathmapper.common.types.paths_type_hints import PathsByServersGroupByLen
 from servicepathmapper.io.output_generators.file_system import FileSystemOutputGenerator
+from tests.tests_common import default_config_args
 
 
 def test_file_system_output_generator_end_to_end(tmp_path: Path) -> None:
@@ -23,16 +24,13 @@ def _run_output_generator(output_dir_path: Path) -> int:
     config_stats = _get_test_config_stats()
     paths = _get_paths_by_length_by_servers_group()
     participation_counters = _get_test_participation_counters(entities, config_stats, paths)
+
     return generator.generate_output(
         entities=entities,
-        out_dir_path=output_dir_path,
         config_stats=config_stats,
+        config_args=default_config_args(output_dir_path),
         participation_counters=participation_counters,
         paths_by_path_length_by_servers_group=paths,
-        server_groups_only=False,
-        stats_only=False,
-        stats_in_dir=False,
-        max_threads=1
     )
 
 

@@ -1,5 +1,4 @@
-from pathlib import Path
-
+from servicepathmapper.common.strings import program_args
 from servicepathmapper.common.types.entities import Entities
 from servicepathmapper.common.types.paths_type_hints import PathsByServersGroupByLen
 
@@ -11,20 +10,16 @@ class OutputGenerationParams:
 
     def __init__(self,
                  entities: Entities,
-                 out_dir_path: Path,
                  config_stats: dict,
+                 config_args: dict,
                  participation_counters: dict | None,
-                 paths_by_servers_group_by_len: PathsByServersGroupByLen | None,
-                 stats_only: bool,
-                 stats_in_dir: bool,
-                 server_groups_only: bool,
-                 max_threads: int):
+                 paths_by_servers_group_by_len: PathsByServersGroupByLen | None):
         self.entities = entities
-        self.out_dir_path = out_dir_path
+        self.out_dir_path = config_args[program_args.ARG_OUTPUT_DIR]
         self.config_stats = config_stats
         self.participation_counters = participation_counters
         self.paths_by_servers_group_by_len = paths_by_servers_group_by_len
-        self.stats_only = stats_only
-        self.stats_in_dir = stats_in_dir
-        self.server_groups_only = server_groups_only
-        self.max_threads = max_threads
+        self.stats_only = config_args[program_args.ARG_STATS_ONLY]
+        self.stats_in_dir = config_args[program_args.ARG_OUTPUT_STATS_IN_DIR]
+        self.server_groups_only = config_args[program_args.ARG_SERVER_GROUPS_ONLY]
+        self.max_threads = config_args[program_args.ARG_MAX_THREADS]

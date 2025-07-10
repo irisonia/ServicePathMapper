@@ -30,6 +30,7 @@ def process_program_args(args: dict) -> tuple[Entities, ConfigStats]:
                                       entities=entities,
                                       providers=providers,
                                       clients=clients)
+
     _validate(args, entities)
 
     return entities, config_stats

@@ -6,7 +6,7 @@ import tests.tests_strings as tests_common
 from ...run_test_case import run_test_case
 
 
-def test_config_stats_only() -> None:
+def test_stats_flag_implied_by_config_stats_flag() -> None:
     run_test_case(_get_config(), _expected_results)
 
 
@@ -18,6 +18,7 @@ def _get_config():
         program_args.ARG_MAX_PATH_LEN: 5,
         program_args.ARG_SRC_SERVER: "b",
         program_args.ARG_DST_SERVER: "a",
+        program_args.ARG_STATS_ONLY: False,
         program_args.ARG_CONFIG_STATS_ONLY: True
     }
 

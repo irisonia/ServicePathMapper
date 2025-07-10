@@ -106,14 +106,10 @@ def _run(
 
     return output_generator.generate_output(
         entities=entities,
-        out_dir_path=config_args[program_args.ARG_OUTPUT_DIR],
         config_stats=config_stats,
+        config_args=config_args,
         participation_counters=participation_in_paths_counters,
-        paths_by_path_length_by_servers_group=paths,
-        server_groups_only=config_args[program_args.ARG_SERVER_GROUPS_ONLY],
-        stats_only=config_args[program_args.ARG_STATS_ONLY],
-        stats_in_dir=config_args[program_args.ARG_OUTPUT_STATS_IN_DIR],
-        max_threads=config_args[program_args.ARG_MAX_THREADS])
+        paths_by_path_length_by_servers_group=paths)
 
 
 if __name__ == '__main__':

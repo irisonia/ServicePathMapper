@@ -8,19 +8,16 @@ from servicepathmapper.common.types.entities import Entities
 from servicepathmapper.common.types.exception_types.filesystem_error import FileSystemError
 from servicepathmapper.common.types.output_generation_params import OutputGenerationParams
 from servicepathmapper.io.output_generators.file_system import _output_paths
+from tests.tests_common import default_config_args
 
 
 def test_output_paths_raises_filesystem_error_on_write_failure(tmp_path):
     output_params = OutputGenerationParams(
-        out_dir_path=tmp_path,
         entities=_get_test_entities(),
         config_stats={},
+        config_args=default_config_args(tmp_path),
         participation_counters=None,
-        stats_only=False,
-        stats_in_dir=False,
-        paths_by_servers_group_by_len=_get_paths(),
-        max_threads=1,
-        server_groups_only=False,
+        paths_by_servers_group_by_len=_get_paths()
     )
 
     with patch.object(Path, "write_text", side_effect=OSError("disk full")):
