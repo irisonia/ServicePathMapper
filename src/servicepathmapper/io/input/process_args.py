@@ -2,13 +2,12 @@ from collections import defaultdict
 from pathlib import Path
 
 import servicepathmapper.common.strings.program_args as program_args
-from servicepathmapper.common.types.config_stats import ConfigStats
 from servicepathmapper.common.types.entities import Entities
 from servicepathmapper.common.types.exception_types.filesystem_error import FileSystemError
 from servicepathmapper.common.types.exception_types.logic_error import LogicError
 
 
-def process_program_args(args: dict) -> tuple[Entities, ConfigStats]:
+def process_program_args(args: dict) -> tuple[Entities, defaultdict[str, list]]:
     """
     Analyze and process program arguments into entities and their relationships.
 
@@ -26,14 +25,13 @@ def process_program_args(args: dict) -> tuple[Entities, ConfigStats]:
     _read_policy_files(args, entities)
     _set_hardcoded_config(args, entities)
     providers, clients = _init_servers(args, entities)
-    config_stats = _set_relationships(args=args,
-                                      entities=entities,
-                                      providers=providers,
-                                      clients=clients)
-
+    services_with_clients_no_providers = _set_relationships(args=args,
+                                                            entities=entities,
+                                                            providers=providers,
+                                                            clients=clients)
     _validate(args, entities)
 
-    return entities, config_stats
+    return entities, services_with_clients_no_providers
 
 
 def _read_lines_from_file(file_path: Path) -> set[str]:
@@ -101,29 +99,23 @@ def _init_servers(args: dict, entities: Entities) -> tuple[list[str], list[str]]
 def _set_relationships(args: dict,
                        entities: Entities,
                        providers: list,
-                       clients: list) -> ConfigStats:
+                       clients: list) -> defaultdict[str, list]:
     """Init client-provider relationships between servers-servers and servers-services."""
-
-    config_stats = ConfigStats()
 
     for provider in providers:
         services = _read_lines_from_file(args[program_args.ARG_PROVIDERS_DIR] / provider)
         _init_services_for_provider(entities=entities, server_name=provider, service_names=services)
 
+    services_with_clients_no_providers: defaultdict[str, list] = defaultdict(list)
     for client in clients:
         services = _read_lines_from_file(args[program_args.ARG_CLIENTS_DIR] / client)
         _init_services_for_client(entities=entities,
                                   server_name=client,
                                   service_names=services,
-                                  services_with_clients_no_providers=config_stats._services_with_clients_no_providers)
-
-    config_stats._services_unreachable_for_sole_provider_client = (
-        _init_services_unreachable_for_sole_provider_client(entities))
-    config_stats._services_with_providers_no_clients = (
-        config_stats).services_provided_but_with_no_clients = _init_services_provided_but_with_no_clients(entities)
+                                  services_with_clients_no_providers=services_with_clients_no_providers)
     _init_providers_per_client(entities)
 
-    return config_stats
+    return services_with_clients_no_providers
 
 
 def _init_services_for_provider(entities: Entities, server_name: str, service_names: set) -> None:
@@ -177,31 +169,6 @@ def _is_allowed(name: str, mandatory: set, allowed: set, forbidden: set) -> bool
     if len(allowed) != 0:
         return (name in allowed) or (name in mandatory)
     return name not in forbidden
-
-
-def _init_services_unreachable_for_sole_provider_client(entities: Entities) -> defaultdict[str, list]:
-    """A service where its sole provider is also its sole client."""
-    services_unreachable_for_sole_provider_client = defaultdict(list)
-
-    for service, providers in entities.providers_of_service.items():
-        if (len(providers) == 1) and (providers == entities.clients_of_service[service]):
-            p, = providers
-            services_unreachable_for_sole_provider_client[p].append(service)
-
-    return services_unreachable_for_sole_provider_client
-
-
-def _init_services_provided_but_with_no_clients(entities: Entities) -> defaultdict[str, list]:
-    """Find any service that has allowed providers, but no allowed clients."""
-    services_with_providers_no_clients = defaultdict(list)
-
-    for service_id in entities.providers_of_service:
-        if ((service_id not in entities.clients_of_service)
-                or (len(entities.clients_of_service[service_id]) == 0)):
-            services_with_providers_no_clients[service_id] = sorted(
-                p for p in entities.providers_of_service[service_id])
-
-    return services_with_providers_no_clients
 
 
 def _init_providers_per_client(entities: Entities) -> None:

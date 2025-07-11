@@ -15,6 +15,7 @@ from servicepathmapper.io.input.process_args import process_program_args
 from servicepathmapper.io.output_generators.base import OutputGenerator
 from servicepathmapper.io.output_generators.file_system import FileSystemOutputGenerator
 from servicepathmapper.logic.paths import map_paths
+from servicepathmapper.logic.stats.make_config_stats import make_config_stats
 from servicepathmapper.logic.validate_potential_for_paths import validate_potential_for_paths
 
 
@@ -32,7 +33,8 @@ def main(test_config: dict = None, output_generator: OutputGenerator = None) -> 
 
         Logger.log(_get_configuration_summary(config_args), logging.INFO)
 
-        entities, config_stats = process_program_args(config_args)
+        entities, services_with_clients_no_providers = process_program_args(config_args)
+        config_stats = make_config_stats(entities, services_with_clients_no_providers)
 
         res = _run(entities=entities,
                    config_args=config_args,
