@@ -92,10 +92,13 @@ class ParticipationInPathsCounters:
                 for server in group:
                     self._num_groups_of_server[server] += 1
                 for path in paths_of_group:
+                    participating_services: set[int] = set()
                     for server, services in path:
                         self._server_participation_ctr[server] += 1
                         for service in services:
-                            self._service_participation_ctr[service] += 1
+                            participating_services.add(service)
+                    for service in participating_services:
+                        self._service_participation_ctr[service] += 1
 
                     for i in range(1, len(path)):
                         server1 = path[i - 1][0]
